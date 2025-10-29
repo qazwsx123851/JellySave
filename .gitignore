@@ -1,0 +1,88 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Xcode
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xccrashpoint
+*.xcscmblueprint
+*.xcuserstate
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+# Keep the resolved file under source control
+!Package.resolved
+
+# CocoaPods (not used by default, but ignore if present)
+Pods/
+
+# Carthage (not used by default, but ignore if present)
+Carthage/Build/
+Carthage/Checkouts/
+
+# Fastlane (suggested in CI/CD)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+
+# Logs & Reports
+*.log
+Reports/
+build_logs/
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# iOS Artifacts
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Code Coverage
+*.xccovreport
+*.xccovarchive
+
+# Tooling caches & temps
+.swiftlint*
+.swiftformat*
+.sourcery/
+.temp/
+.tmp/
+
+# User/Local configs (keep shared configs in repo)
+*.xcconfig.local
+Secrets.xcconfig
+
+# Editors/IDEs
+.vscode/
+.idea/
+.cursor/
+
+# Env files
+.env
+.env.*
