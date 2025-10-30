@@ -9,8 +9,8 @@
 ## 🏗️ Phase 1: 專案基礎設置 (3 個任務)
 
 - [x] **project-setup** - 創建 Xcode 專案並配置基本設置 (Bundle ID: com.jellysave.app, iOS 16+ target, SwiftUI)
-- [ ] **assets-catalog** - 創建 Assets.xcassets - 圖片資源管理
-- [ ] **info-plist-config** - 配置 Info.plist - 通知權限與基本設置
+- [x] **assets-catalog** - 創建 Assets.xcassets - 圖片資源管理
+- [x] **info-plist-config** - 配置 Info.plist - 通知權限與基本設置
 
 ---
 
