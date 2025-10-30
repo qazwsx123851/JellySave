@@ -8,9 +8,24 @@ struct HomeView: View {
     ]
 
     private let recentInsights: [Insight] = [
-        Insight(title: "本月已儲蓄", value: NumberFormatter.twdString(from: Decimal(18_500)), descriptor: "+ 12% vs 上月"),
-        Insight(title: "距離目標", value: NumberFormatter.twdString(from: Decimal(31_500)), descriptor: "預估 3 個月達成"),
-        Insight(title: "通知排程", value: "每日 21:00", descriptor: "提醒保持儲蓄節奏")
+        Insight(
+            title: "本月已儲蓄",
+            value: NumberFormatter.twdString(from: Decimal(18_500)),
+            descriptor: "+ 12% vs 上月",
+            systemImage: "arrow.up.right"
+        ),
+        Insight(
+            title: "距離目標",
+            value: NumberFormatter.twdString(from: Decimal(31_500)),
+            descriptor: "預估 3 個月達成",
+            systemImage: "target"
+        ),
+        Insight(
+            title: "通知排程",
+            value: "每日 21:00",
+            descriptor: "提醒保持儲蓄節奏",
+            systemImage: "bell.badge"
+        )
     ]
 
     var body: some View {
@@ -36,21 +51,54 @@ private extension HomeView {
     var totalAssetsCard: some View {
         ZStack(alignment: .leading) {
             GradientBackground(style: .hero, cornerRadius: Constants.CornerRadius.large)
-            VStack(alignment: .leading, spacing: 16) {
-                Text("總資產")
-                    .font(Constants.Typography.caption)
-                    .foregroundStyle(Color.white.opacity(0.8))
+                // 透過放射漸層與陰影營造主視覺焦點。
+                .overlay(
+                    RadialGradient(
+                        colors: [
+                            Color.white.opacity(0.32),
+                            Color.white.opacity(0.08)
+                        ],
+                        center: .topTrailing,
+                        startRadius: 10,
+                        endRadius: 220
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: Constants.CornerRadius.large, style: .continuous))
+                )
+                .shadow(color: ThemeColor.primary.opacity(0.23), radius: 18, x: 0, y: 12)
+            VStack(alignment: .leading, spacing: 18) {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white.opacity(0.18))
+                            .frame(width: 48, height: 48)
+                        Image(systemName: "leaf.fill")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("總資產")
+                            .font(Constants.Typography.caption)
+                            .foregroundStyle(Color.white.opacity(0.85))
+                        Text("以最新匯入資料更新")
+                            .font(Constants.Typography.caption)
+                            .foregroundStyle(Color.white.opacity(0.65))
+                    }
+                }
 
                 Text(NumberFormatter.twdString(from: Decimal(820_000)))
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.white)
 
                 HStack(spacing: 16) {
                     ForEach(recentInsights) { insight in
                         VStack(alignment: .leading, spacing: 6) {
-                            Text(insight.title)
-                                .font(Constants.Typography.caption)
-                                .foregroundStyle(Color.white.opacity(0.8))
+                            HStack(spacing: 6) {
+                                Image(systemName: insight.systemImage)
+                                    .foregroundStyle(Color.white.opacity(0.75))
+                                Text(insight.title)
+                                    .font(Constants.Typography.caption)
+                                    .foregroundStyle(Color.white.opacity(0.9))
+                            }
                             Text(insight.value)
                                 .font(Constants.Typography.body.weight(.semibold))
                                 .foregroundStyle(Color.white)
@@ -62,7 +110,7 @@ private extension HomeView {
                     }
                 }
 
-                CustomButton("新增交易", iconName: "arrow.up.arrow.down", style: .secondary) {}
+                CustomButton("新增交易", iconName: "sparkles", style: .secondary) {}
             }
             .padding(24)
         }
@@ -104,10 +152,17 @@ private extension HomeView {
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                                .fill(ThemeColor.cardBackground(for: colorScheme))
+                                .fill(ThemeColor.cardBackground(for: colorScheme).opacity(0.92))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
+                                        .stroke(ThemeColor.primary.opacity(0.12), lineWidth: 1)
+                                )
                         )
+                        // 讓快捷卡片在點擊時有微縮放回饋，感受更輕快。
+                        .shadow(color: ThemeColor.primary.opacity(0.08), radius: 10, x: 0, y: 6)
                     }
                     .buttonStyle(.plain)
+                    .pressableCardStyle()
                 }
             }
         }
@@ -152,6 +207,7 @@ private struct Insight: Identifiable {
     let title: String
     let value: String
     let descriptor: String
+    let systemImage: String
 }
 
 #Preview {

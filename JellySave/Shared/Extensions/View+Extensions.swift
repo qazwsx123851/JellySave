@@ -33,6 +33,14 @@ private struct FullWidthModifier: ViewModifier {
     }
 }
 
+private struct PressableCardButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
+    }
+}
+
 public extension View {
     /// Applies a card-style background with default padding and optional shadow.
     func cardBackground(cornerRadius: CGFloat = Constants.CornerRadius.large, showShadow: Bool = true) -> some View {
@@ -57,5 +65,10 @@ public extension View {
         } else {
             self
         }
+    }
+
+    /// Applies a subtle scale animation when used inside a button.
+    func pressableCardStyle() -> some View {
+        buttonStyle(PressableCardButtonStyle())
     }
 }

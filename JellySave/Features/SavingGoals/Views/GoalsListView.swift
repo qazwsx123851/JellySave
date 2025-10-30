@@ -10,6 +10,8 @@ struct GoalsListView: View {
         GoalPreview(title: "年度保險費", targetAmount: Decimal(50_000), currentAmount: Decimal(50_000), deadlineDescription: "已於 2 週前達成")
     ]
 
+    @State private var isPresentingCreateGoal = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -38,6 +40,7 @@ struct GoalsListView: View {
                                             .foregroundColor(ThemeColor.neutralDark.opacity(0.6))
                                     }
                                     Spacer()
+                                    TagLabel(text: "已完成", identifier: "goal-complete", systemImage: "checkmark.seal.fill")
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(ThemeColor.success)
                                 }
@@ -45,13 +48,30 @@ struct GoalsListView: View {
                         }
                     }
 
-                    CustomButton("新增儲蓄目標", iconName: "target") {}
+                    CustomButton("新增儲蓄目標", iconName: "target") {
+                        isPresentingCreateGoal = true
+                    }
+
+                    if activeGoals.isEmpty && completedGoals.isEmpty {
+                        // 空狀態下引導使用者快速建立第一個儲蓄目標。
+                        EmptyStateView(
+                            title: "尚未設定儲蓄目標",
+                            message: "建立第一個目標來追蹤進度，JellySave 會提醒你保持好習慣。",
+                            actionTitle: "建立目標",
+                            systemImage: "target"
+                        ) {
+                            isPresentingCreateGoal = true
+                        }
+                    }
                 }
                 .sectionPadding()
                 .padding(.vertical, 24)
             }
             .background(ThemeColor.background(for: colorScheme).ignoresSafeArea())
             .navigationTitle("儲蓄目標")
+            .sheet(isPresented: $isPresentingCreateGoal) {
+                CreateGoalView()
+            }
         }
     }
 
@@ -72,9 +92,17 @@ private extension GoalsListView {
                 Text(goal.deadlineDescription)
                     .font(Constants.Typography.caption)
                     .foregroundColor(ThemeColor.neutralDark.opacity(0.6))
-                Text("進度：\(Int(progress * 100))%")
-                    .font(Constants.Typography.caption)
-                    .foregroundColor(ThemeColor.primary)
+                HStack(spacing: 8) {
+                    TagLabel(
+                        text: "\(Int(progress * 100))% 已完成",
+                        identifier: "goal-active",
+                        systemImage: "hourglass.tophalf.fill"
+                    )
+                    // 顯示預估完成時間，牽引使用者維持儲蓄節奏。
+                    Text("維持每月存款可於 \(goal.estimatedCompletion) 達成")
+                        .font(Constants.Typography.caption)
+                        .foregroundColor(ThemeColor.neutralDark.opacity(0.55))
+                }
             }
             Spacer()
         }
@@ -92,6 +120,10 @@ private struct GoalPreview: Identifiable, Equatable {
         guard targetAmount > 0 else { return 0 }
         let ratio = NSDecimalNumber(decimal: currentAmount).doubleValue / NSDecimalNumber(decimal: targetAmount).doubleValue
         return min(max(ratio, 0), 1)
+    }
+
+    var estimatedCompletion: String {
+        "約 \(Int((1 - progress) * 6) + 1) 個月內"
     }
 }
 

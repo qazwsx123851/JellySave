@@ -24,6 +24,10 @@
 		5B9AB00B2F6D0C3A00F5C1A1 /* AccountsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */; };
 		5B9AB00C2F6D0C3A00F5C1A1 /* GoalsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */; };
 		5B9AB00D2F6D0C3A00F5C1A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00D2F6D0C3A00F5C1A1 /* SettingsView.swift */; };
+		5B9AB00E2F6D0F8D00F5C1A1 /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00E2F6D0F8D00F5C1A1 /* AddAccountView.swift */; };
+		5B9AB00F2F6D0F8D00F5C1A1 /* CreateGoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00F2F6D0F8D00F5C1A1 /* CreateGoalView.swift */; };
+		5B9AB0102F6D1A8C00F5C1A1 /* TagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0102F6D1A8C00F5C1A1 /* TagLabel.swift */; };
+		5B9AB0112F6D1BE800F5C1A1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0112F6D1BE800F5C1A1 /* EmptyStateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +50,10 @@
 		5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsListView.swift; sourceTree = "<group>"; };
 		5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsListView.swift; sourceTree = "<group>"; };
 		5B9AA00D2F6D0C3A00F5C1A1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		5B9AA00E2F6D0F8D00F5C1A1 /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
+		5B9AA00F2F6D0F8D00F5C1A1 /* CreateGoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGoalView.swift; sourceTree = "<group>"; };
+		5B9AA0102F6D1A8C00F5C1A1 /* TagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagLabel.swift; sourceTree = "<group>"; };
+		5B9AA0112F6D1BE800F5C1A1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +157,8 @@
 				5B9AA0072F6D0C3A00F5C1A1 /* ProgressRing.swift */,
 				5B9AA0082F6D0C3A00F5C1A1 /* CardContainer.swift */,
 				5B9AA0092F6D0C3A00F5C1A1 /* GradientBackground.swift */,
+				5B9AA0102F6D1A8C00F5C1A1 /* TagLabel.swift */,
+				5B9AA0112F6D1BE800F5C1A1 /* EmptyStateView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -192,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */,
+				5B9AA00E2F6D0F8D00F5C1A1 /* AddAccountView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */,
+				5B9AA00F2F6D0F8D00F5C1A1 /* CreateGoalView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -312,6 +324,10 @@
 				5B06A5A128F8471D00A1D2F6 /* JellySaveApp.swift in Sources */,
 				5B9AB00C2F6D0C3A00F5C1A1 /* GoalsListView.swift in Sources */,
 				5B9AB0012F6D0C3A00F5C1A1 /* Color+Theme.swift in Sources */,
+				5B9AB00E2F6D0F8D00F5C1A1 /* AddAccountView.swift in Sources */,
+				5B9AB00F2F6D0F8D00F5C1A1 /* CreateGoalView.swift in Sources */,
+				5B9AB0102F6D1A8C00F5C1A1 /* TagLabel.swift in Sources */,
+				5B9AB0112F6D1BE800F5C1A1 /* EmptyStateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

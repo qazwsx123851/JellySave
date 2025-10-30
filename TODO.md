@@ -14,7 +14,7 @@
 
 ---
 
-## 🎨 Phase 2: 靜態 UI 設計與主題系統 (12 個任務)
+## 🎨 Phase 2: 靜態 UI 設計與主題系統 (14 個任務)
 
 ### 主題與設計系統
 - [x] **theme-colors** - 實現 Color+Theme.swift - 主題顏色系統 (薄荷綠/天空藍/珊瑚粉)
@@ -32,7 +32,9 @@
 ### 靜態頁面設計
 - [x] **home-view-static** - 實現 HomeView.swift 靜態版本 (無數據綁定)
 - [x] **accounts-list-view-static** - 實現 AccountsListView.swift 靜態版本
+- [x] **add-account-view-static** - 實現 AddAccountView.swift 靜態版本
 - [x] **goals-list-view-static** - 實現 GoalsListView.swift 靜態版本
+- [x] **create-goal-view-static** - 實現 CreateGoalView.swift 靜態版本
 - [x] **settings-view-static** - 實現 SettingsView.swift 靜態版本
 
 ---

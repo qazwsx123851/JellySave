@@ -15,6 +15,8 @@ struct AccountsListView: View {
         ])
     ]
 
+    @State private var isPresentingAddAccount = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -26,13 +28,20 @@ struct AccountsListView: View {
                             VStack(spacing: 12) {
                                 ForEach(section.accounts) { account in
                                     HStack {
-                                        VStack(alignment: .leading, spacing: 4) {
+                                        VStack(alignment: .leading, spacing: 6) {
                                             Text(account.name)
                                                 .font(Constants.Typography.body.weight(.semibold))
                                                 .foregroundColor(ThemeColor.neutralDark)
-                                            Text(account.type)
-                                                .font(Constants.Typography.caption)
-                                                .foregroundColor(ThemeColor.neutralDark.opacity(0.6))
+                                            HStack(spacing: 8) {
+                                                TagLabel(
+                                                    text: account.type,
+                                                    identifier: badgeIdentifier(for: account),
+                                                    systemImage: badgeIcon(for: account)
+                                                )
+                                                Text("最後更新 2 天前")
+                                                    .font(Constants.Typography.caption)
+                                                    .foregroundColor(ThemeColor.neutralDark.opacity(0.5))
+                                            }
                                         }
                                         Spacer()
                                         Text(NumberFormatter.twdString(from: account.balance))
@@ -48,14 +57,31 @@ struct AccountsListView: View {
                         }
                     }
 
-                    CustomButton("新增帳戶", iconName: "plus") {}
+                    CustomButton("新增帳戶", iconName: "plus") {
+                        isPresentingAddAccount = true
+                    }
                         .padding(.top, 8)
+
+                    if groupedAccounts.isEmpty {
+                        // 顯示空狀態，提醒使用者新增第一個帳戶。
+                        EmptyStateView(
+                            title: "尚未新增帳戶",
+                            message: "加上一個薪轉或投資帳戶，開始追蹤你的財務狀況。",
+                            actionTitle: "新增帳戶",
+                            systemImage: "wallet.pass"
+                        ) {
+                            isPresentingAddAccount = true
+                        }
+                    }
                 }
                 .sectionPadding()
                 .padding(.vertical, 24)
             }
             .background(ThemeColor.background(for: colorScheme).ignoresSafeArea())
             .navigationTitle("帳戶")
+            .sheet(isPresented: $isPresentingAddAccount) {
+                AddAccountView()
+            }
         }
     }
 
@@ -63,6 +89,32 @@ struct AccountsListView: View {
 }
 
 private extension AccountsListView {
+    func badgeIdentifier(for account: AccountSummary) -> String {
+        switch account.type {
+        case let type where type.contains("銀行"):
+            return "bank"
+        case let type where type.contains("證券") || type.contains("ETF"):
+            return "investment"
+        case let type where type.contains("現金"):
+            return "cash"
+        default:
+            return "default"
+        }
+    }
+
+    func badgeIcon(for account: AccountSummary) -> String {
+        switch badgeIdentifier(for: account) {
+        case "bank":
+            return "building.columns"
+        case "investment":
+            return "chart.line.uptrend.xyaxis"
+        case "cash":
+            return "dollarsign"
+        default:
+            return "creditcard"
+        }
+    }
+
     var summaryHeader: some View {
         CardContainer(title: "總覽", subtitle: "帳戶總覽", iconName: "wallet.pass") {
             VStack(alignment: .leading, spacing: 12) {

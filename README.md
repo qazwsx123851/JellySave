@@ -77,7 +77,9 @@ JellySave/
 │   ├── Components/
 │   │   ├── CustomButton.swift      # 通用按鈕
 │   │   ├── CurrencyTextField.swift # 金額輸入框
-│   │   └── ProgressRing.swift      # 進度環
+│   │   ├── ProgressRing.swift      # 進度環
+│   │   ├── TagLabel.swift          # 標籤樣式
+│   │   └── EmptyStateView.swift    # 空狀態呈現
 │   ├── Extensions/
 │   │   ├── Color+Theme.swift       # 主題顏色
 │   │   ├── View+Extensions.swift   # View 擴展
@@ -162,12 +164,20 @@ JellySave/
 - **卡片式布局**: 使用圓角卡片分組內容
 - **漸層色彩**: 柔和的漸層背景
 - **流暢動畫**: 頁面切換和數據更新動畫
+- **視覺焦點**: 首頁英雄卡片搭配漸層光暈與圖示貼紙，凸顯資產重點
 
 ### 主題色彩
 - 主色調: 薄荷綠/天空藍(代表成長和希望)
 - 輔助色: 珊瑚粉(強調和成就)
 - 中性色: 深灰/淺灰(文字和背景)
 - 成功色: 翠綠(目標達成)
+- 警示色: 暖黃色(表單提示與待辦提醒)
+
+### 互動細節
+- 快捷操作與卡片採用縮放陰影回饋，點擊體驗更輕快
+- 列表以 `TagLabel` 顯示類型/進度，搭配時間資訊提升辨識度
+- 空狀態使用 `EmptyStateView` 提供友善引導與呼叫行動
+- 表單欄位提供即時字數/提示訊息，協助使用者輸入正確資料
 
 ### 關鍵頁面佈局
 1. **首頁**: 總資產卡片 → 月度趨勢圖 → 快捷操作

@@ -4,16 +4,20 @@ import SwiftUI
 public enum ThemeColor {
     /// Mint primary brand color used for primary actions and totals.
     public static let primary = Color("BrandPrimary")
-    /// Coral accent for highlights, alerts, or completion states.
+    /// 珊瑚色輔助色，用於提醒或強調狀態。
     public static let accent = Color("BrandAccent")
-    /// Vibrant highlight reserved for key celebratory UI.
+    /// 天藍色次要主題色，搭配主視覺漸層與進度徽章。
+    public static let secondary = Color(red: 0.36, green: 0.62, blue: 0.98)
+    /// 嗨亮色，用於慶祝或達成的瞬間效果。
     public static let highlight = Color("BrandHighlight")
     /// Neutral dark tone for text on light backgrounds.
     public static let neutralDark = Color("NeutralDark")
     /// Neutral light background color for grouping content.
     public static let neutralLight = Color("NeutralLight")
-    /// Success state color for confirmations or progress indicators.
+    /// 成功狀態顏色，對應確認或進度已完成。
     public static let success = Color("Success")
+    /// 藍橘中間值，用於表單警示與待處理狀態。
+    public static let warning = Color(red: 0.96, green: 0.73, blue: 0.31)
     /// Default accent used across the app, aligned with Xcode's accent asset.
     public static let accentDefault = Color.accentColor
 
@@ -45,7 +49,11 @@ public enum ThemeColor {
 public enum ThemeGradient {
     /// Gradient for hero cards (e.g. total assets) blending mint and sky blue hues.
     public static let hero = LinearGradient(
-        colors: [ThemeColor.primary, ThemeColor.primary.opacity(0.6)],
+        colors: [
+            ThemeColor.primary,
+            ThemeColor.secondary.opacity(0.9),
+            ThemeColor.primary.opacity(0.7)
+        ],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
@@ -74,5 +82,41 @@ public struct ShadowStyle {
         self.radius = radius
         self.x = x
         self.y = y
+    }
+}
+
+public enum ThemeBadge {
+    public static func background(for identifier: String) -> Color {
+        switch identifier {
+        case "bank":
+            return ThemeColor.primary.opacity(0.16)
+        case "investment":
+            return ThemeColor.highlight.opacity(0.18)
+        case "cash":
+            return ThemeColor.accent.opacity(0.18)
+        case "goal-active":
+            return ThemeColor.secondary.opacity(0.22)
+        case "goal-complete":
+            return ThemeColor.success.opacity(0.2)
+        default:
+            return ThemeColor.neutralLight.opacity(0.5)
+        }
+    }
+
+    public static func foreground(for identifier: String) -> Color {
+        switch identifier {
+        case "bank":
+            return ThemeColor.primary
+        case "investment":
+            return ThemeColor.highlight
+        case "cash":
+            return ThemeColor.accent
+        case "goal-active":
+            return ThemeColor.secondary
+        case "goal-complete":
+            return ThemeColor.success
+        default:
+            return ThemeColor.neutralDark
+        }
     }
 }
