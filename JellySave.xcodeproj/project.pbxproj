@@ -11,6 +11,19 @@
 		5B06A5A228F8471D00A1D2F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B06A59B28F8471D00A1D2F6 /* AppDelegate.swift */; };
 		5B06A5A528F8471D00A1D2F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B06A59F28F8471D00A1D2F6 /* Assets.xcassets */; };
 		5B06A5A728F8471D00A1D2F6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B06A5A328F8471D00A1D2F6 /* Preview Assets.xcassets */; };
+		5B9AB0012F6D0C3A00F5C1A1 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0012F6D0C3A00F5C1A1 /* Color+Theme.swift */; };
+		5B9AB0022F6D0C3A00F5C1A1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0022F6D0C3A00F5C1A1 /* Constants.swift */; };
+		5B9AB0032F6D0C3A00F5C1A1 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0032F6D0C3A00F5C1A1 /* View+Extensions.swift */; };
+		5B9AB0042F6D0C3A00F5C1A1 /* NumberFormatter+Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0042F6D0C3A00F5C1A1 /* NumberFormatter+Currency.swift */; };
+		5B9AB0052F6D0C3A00F5C1A1 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0052F6D0C3A00F5C1A1 /* CustomButton.swift */; };
+		5B9AB0062F6D0C3A00F5C1A1 /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0062F6D0C3A00F5C1A1 /* CurrencyTextField.swift */; };
+		5B9AB0072F6D0C3A00F5C1A1 /* ProgressRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0072F6D0C3A00F5C1A1 /* ProgressRing.swift */; };
+		5B9AB0082F6D0C3A00F5C1A1 /* CardContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0082F6D0C3A00F5C1A1 /* CardContainer.swift */; };
+		5B9AB0092F6D0C3A00F5C1A1 /* GradientBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA0092F6D0C3A00F5C1A1 /* GradientBackground.swift */; };
+		5B9AB00A2F6D0C3A00F5C1A1 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00A2F6D0C3A00F5C1A1 /* HomeView.swift */; };
+		5B9AB00B2F6D0C3A00F5C1A1 /* AccountsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */; };
+		5B9AB00C2F6D0C3A00F5C1A1 /* GoalsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */; };
+		5B9AB00D2F6D0C3A00F5C1A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9AA00D2F6D0C3A00F5C1A1 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +33,19 @@
 		5B06A59E28F8471D00A1D2F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B06A59F28F8471D00A1D2F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5B06A5A328F8471D00A1D2F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5B9AA0012F6D0C3A00F5C1A1 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		5B9AA0022F6D0C3A00F5C1A1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5B9AA0032F6D0C3A00F5C1A1 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		5B9AA0042F6D0C3A00F5C1A1 /* NumberFormatter+Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+Currency.swift"; sourceTree = "<group>"; };
+		5B9AA0052F6D0C3A00F5C1A1 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		5B9AA0062F6D0C3A00F5C1A1 /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
+		5B9AA0072F6D0C3A00F5C1A1 /* ProgressRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRing.swift; sourceTree = "<group>"; };
+		5B9AA0082F6D0C3A00F5C1A1 /* CardContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardContainer.swift; sourceTree = "<group>"; };
+		5B9AA0092F6D0C3A00F5C1A1 /* GradientBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackground.swift; sourceTree = "<group>"; };
+		5B9AA00A2F6D0C3A00F5C1A1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsListView.swift; sourceTree = "<group>"; };
+		5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsListView.swift; sourceTree = "<group>"; };
+		5B9AA00D2F6D0C3A00F5C1A1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				5B06A59D28F8471D00A1D2F6 /* App */,
+				5B9AC0002F6D0C3A00F5C1A1 /* Shared */,
+				5B9AC0102F6D0C3A00F5C1A1 /* Features */,
 				5B06A5A028F8471D00A1D2F6 /* Resources */,
 			);
 			path = JellySave;
@@ -83,6 +111,121 @@
 				5B06A5A328F8471D00A1D2F6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5B9AC0002F6D0C3A00F5C1A1 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0012F6D0C3A00F5C1A1 /* Extensions */,
+				5B9AC0032F6D0C3A00F5C1A1 /* Components */,
+				5B9AC0022F6D0C3A00F5C1A1 /* Utilities */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		5B9AC0012F6D0C3A00F5C1A1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA0012F6D0C3A00F5C1A1 /* Color+Theme.swift */,
+				5B9AA0032F6D0C3A00F5C1A1 /* View+Extensions.swift */,
+				5B9AA0042F6D0C3A00F5C1A1 /* NumberFormatter+Currency.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5B9AC0022F6D0C3A00F5C1A1 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA0022F6D0C3A00F5C1A1 /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		5B9AC0032F6D0C3A00F5C1A1 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA0052F6D0C3A00F5C1A1 /* CustomButton.swift */,
+				5B9AA0062F6D0C3A00F5C1A1 /* CurrencyTextField.swift */,
+				5B9AA0072F6D0C3A00F5C1A1 /* ProgressRing.swift */,
+				5B9AA0082F6D0C3A00F5C1A1 /* CardContainer.swift */,
+				5B9AA0092F6D0C3A00F5C1A1 /* GradientBackground.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		5B9AC0102F6D0C3A00F5C1A1 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0112F6D0C3A00F5C1A1 /* Home */,
+				5B9AC0132F6D0C3A00F5C1A1 /* Accounts */,
+				5B9AC0152F6D0C3A00F5C1A1 /* SavingGoals */,
+				5B9AC0172F6D0C3A00F5C1A1 /* Settings */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		5B9AC0112F6D0C3A00F5C1A1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0122F6D0C3A00F5C1A1 /* Views */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		5B9AC0122F6D0C3A00F5C1A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA00A2F6D0C3A00F5C1A1 /* HomeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5B9AC0132F6D0C3A00F5C1A1 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0142F6D0C3A00F5C1A1 /* Views */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		5B9AC0142F6D0C3A00F5C1A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA00B2F6D0C3A00F5C1A1 /* AccountsListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5B9AC0152F6D0C3A00F5C1A1 /* SavingGoals */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0162F6D0C3A00F5C1A1 /* Views */,
+			);
+			path = SavingGoals;
+			sourceTree = "<group>";
+		};
+		5B9AC0162F6D0C3A00F5C1A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA00C2F6D0C3A00F5C1A1 /* GoalsListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5B9AC0172F6D0C3A00F5C1A1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AC0182F6D0C3A00F5C1A1 /* Views */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		5B9AC0182F6D0C3A00F5C1A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5B9AA00D2F6D0C3A00F5C1A1 /* SettingsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,8 +297,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B9AB0052F6D0C3A00F5C1A1 /* CustomButton.swift in Sources */,
+				5B9AB0092F6D0C3A00F5C1A1 /* GradientBackground.swift in Sources */,
+				5B9AB00D2F6D0C3A00F5C1A1 /* SettingsView.swift in Sources */,
+				5B9AB0072F6D0C3A00F5C1A1 /* ProgressRing.swift in Sources */,
+				5B9AB00B2F6D0C3A00F5C1A1 /* AccountsListView.swift in Sources */,
+				5B9AB0082F6D0C3A00F5C1A1 /* CardContainer.swift in Sources */,
+				5B9AB0032F6D0C3A00F5C1A1 /* View+Extensions.swift in Sources */,
+				5B9AB00A2F6D0C3A00F5C1A1 /* HomeView.swift in Sources */,
 				5B06A5A228F8471D00A1D2F6 /* AppDelegate.swift in Sources */,
+				5B9AB0062F6D0C3A00F5C1A1 /* CurrencyTextField.swift in Sources */,
+				5B9AB0042F6D0C3A00F5C1A1 /* NumberFormatter+Currency.swift in Sources */,
+				5B9AB0022F6D0C3A00F5C1A1 /* Constants.swift in Sources */,
 				5B06A5A128F8471D00A1D2F6 /* JellySaveApp.swift in Sources */,
+				5B9AB00C2F6D0C3A00F5C1A1 /* GoalsListView.swift in Sources */,
+				5B9AB0012F6D0C3A00F5C1A1 /* Color+Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

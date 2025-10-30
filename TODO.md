@@ -17,23 +17,23 @@
 ## 🎨 Phase 2: 靜態 UI 設計與主題系統 (12 個任務)
 
 ### 主題與設計系統
-- [ ] **theme-colors** - 實現 Color+Theme.swift - 主題顏色系統 (薄荷綠/天空藍/珊瑚粉)
-- [ ] **constants** - 實現 Constants.swift - 常量定義 (字體、間距、圓角等)
-- [ ] **view-extensions** - 實現 View+Extensions.swift - 通用 View 擴展
-- [ ] **currency-formatter** - 實現 NumberFormatter+Currency.swift - 台幣格式化
+- [x] **theme-colors** - 實現 Color+Theme.swift - 主題顏色系統 (薄荷綠/天空藍/珊瑚粉)
+- [x] **constants** - 實現 Constants.swift - 常量定義 (字體、間距、圓角等)
+- [x] **view-extensions** - 實現 View+Extensions.swift - 通用 View 擴展
+- [x] **currency-formatter** - 實現 NumberFormatter+Currency.swift - 台幣格式化
 
 ### 基礎 UI 組件
-- [ ] **custom-button** - 實現 CustomButton.swift - 通用按鈕組件
-- [ ] **currency-textfield** - 實現 CurrencyTextField.swift - 金額輸入框組件
-- [ ] **progress-ring** - 實現 ProgressRing.swift - 進度環組件
-- [ ] **card-container** - 實現 CardContainer.swift - 卡片容器組件
-- [ ] **gradient-background** - 實現 GradientBackground.swift - 漸層背景組件
+- [x] **custom-button** - 實現 CustomButton.swift - 通用按鈕組件
+- [x] **currency-textfield** - 實現 CurrencyTextField.swift - 金額輸入框組件
+- [x] **progress-ring** - 實現 ProgressRing.swift - 進度環組件
+- [x] **card-container** - 實現 CardContainer.swift - 卡片容器組件
+- [x] **gradient-background** - 實現 GradientBackground.swift - 漸層背景組件
 
 ### 靜態頁面設計
-- [ ] **home-view-static** - 實現 HomeView.swift 靜態版本 (無數據綁定)
-- [ ] **accounts-list-view-static** - 實現 AccountsListView.swift 靜態版本
-- [ ] **goals-list-view-static** - 實現 GoalsListView.swift 靜態版本
-- [ ] **settings-view-static** - 實現 SettingsView.swift 靜態版本
+- [x] **home-view-static** - 實現 HomeView.swift 靜態版本 (無數據綁定)
+- [x] **accounts-list-view-static** - 實現 AccountsListView.swift 靜態版本
+- [x] **goals-list-view-static** - 實現 GoalsListView.swift 靜態版本
+- [x] **settings-view-static** - 實現 SettingsView.swift 靜態版本
 
 ---
 
