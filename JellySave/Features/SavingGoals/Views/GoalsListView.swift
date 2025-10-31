@@ -81,31 +81,58 @@ struct GoalsListView: View {
 private extension GoalsListView {
     func goalRow(_ goal: GoalPreview) -> some View {
         let progress = goal.progress
-        return HStack(alignment: .center, spacing: 20) {
-            ProgressRing(progress: progress, title: NumberFormatter.twdString(from: goal.currentAmount), subtitle: "目標 \(NumberFormatter.twdString(from: goal.targetAmount))")
-                .frame(width: 140)
+        return HStack(alignment: .top, spacing: 20) {
+            // 增加留白避免進度環貼近文字。
+            ProgressRing(
+                progress: progress,
+                title: "",
+                subtitle: nil,
+                lineWidth: Constants.Progress.ringLineWidth,
+                size: 104,
+                animateOnAppear: true,
+                animationDuration: 0.65
+            )
+            .padding(4)
+            .background(
+                Circle()
+                    .fill(ThemeColor.cardBackground(for: colorScheme).opacity(0.15))
+            )
+            .padding(.vertical, 2)
 
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 12) {
                 Text(goal.title)
                     .font(Constants.Typography.headline)
                     .foregroundColor(ThemeColor.neutralDark)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
                 Text(goal.deadlineDescription)
                     .font(Constants.Typography.caption)
                     .foregroundColor(ThemeColor.neutralDark.opacity(0.6))
-                HStack(spacing: 8) {
-                    TagLabel(
-                        text: "\(Int(progress * 100))% 已完成",
-                        identifier: "goal-active",
-                        systemImage: "hourglass.tophalf.fill"
-                    )
-                    // 顯示預估完成時間，牽引使用者維持儲蓄節奏。
+                TagLabel(
+                    text: "\(Int(progress * 100))% 已完成",
+                    identifier: "goal-active",
+                    systemImage: "hourglass.tophalf.fill"
+                )
+                Divider()
+                    .background(ThemeColor.neutralLight.opacity(0.6))
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("已存 \(NumberFormatter.twdString(from: goal.currentAmount)) / 目標 \(NumberFormatter.twdString(from: goal.targetAmount))")
+                        .font(Constants.Typography.body.weight(.semibold))
+                        .foregroundColor(ThemeColor.neutralDark.opacity(0.75))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                    // 提醒使用者維持儲蓄節奏。
                     Text("維持每月存款可於 \(goal.estimatedCompletion) 達成")
                         .font(Constants.Typography.caption)
                         .foregroundColor(ThemeColor.neutralDark.opacity(0.55))
+                        .lineLimit(2)
                 }
             }
+            .layoutPriority(1)
+            .dynamicTypeSize(.medium ... .accessibility3)
             Spacer()
         }
+        .padding(.vertical, 8)
     }
 }
 

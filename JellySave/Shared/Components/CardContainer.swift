@@ -31,6 +31,7 @@ public struct CardContainer<Content: View>: View {
             content
         }
         .cardBackground()
+        .dynamicTypeSize(.medium ... .accessibility3) // 限制卡片最大字體範圍，避免內容崩壞。
     }
 
     @ViewBuilder

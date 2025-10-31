@@ -5,21 +5,36 @@ public struct ProgressRing: View {
     private let title: String
     private let subtitle: String?
     private let lineWidth: CGFloat
+    private let size: CGFloat
+    private let animateOnAppear: Bool
+    private let animationDuration: Double
+    @State private var animatedProgress: Double = 0
 
-    public init(progress: Double, title: String, subtitle: String? = nil, lineWidth: CGFloat = Constants.Progress.ringLineWidth) {
+    public init(progress: Double,
+                title: String,
+                subtitle: String? = nil,
+                lineWidth: CGFloat = Constants.Progress.ringLineWidth,
+                size: CGFloat = 120,
+                animateOnAppear: Bool = false,
+                animationDuration: Double = 0.6) {
         self.progress = min(max(progress, 0), 1)
         self.title = title
         self.subtitle = subtitle
         self.lineWidth = lineWidth
+        self.size = size
+        self.animateOnAppear = animateOnAppear
+        self.animationDuration = animationDuration
     }
 
     public var body: some View {
+        let effectiveProgress = animateOnAppear ? animatedProgress : progress
+
         VStack(spacing: 12) {
             ZStack {
                 Circle()
                     .stroke(ThemeColor.neutralLight.opacity(0.6), style: StrokeStyle(lineWidth: lineWidth))
                 Circle()
-                    .trim(from: 0, to: progress)
+                    .trim(from: 0, to: effectiveProgress)
                     .stroke(
                         AngularGradient(
                             gradient: Gradient(colors: [ThemeColor.primary, ThemeColor.highlight, ThemeColor.primary]),
@@ -28,13 +43,25 @@ public struct ProgressRing: View {
                         style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
-                    .animation(.easeOut(duration: 0.4), value: progress)
 
-                Text(percentageText)
+                Text(percentageText(for: effectiveProgress))
                     .font(Constants.Typography.headline)
                     .foregroundColor(ThemeColor.primary)
             }
-            .frame(width: 120, height: 120)
+            .frame(width: size, height: size)
+            .onAppear {
+                guard animateOnAppear else { return }
+                animatedProgress = 0
+                withAnimation(.easeInOut(duration: animationDuration)) {
+                    animatedProgress = progress
+                }
+            }
+            .onChange(of: progress) { newValue in
+                guard animateOnAppear else { return }
+                withAnimation(.easeInOut(duration: animationDuration)) {
+                    animatedProgress = min(max(newValue, 0), 1)
+                }
+            }
 
             VStack(spacing: 4) {
                 Text(title)
@@ -49,8 +76,8 @@ public struct ProgressRing: View {
         }
     }
 
-    private var percentageText: String {
-        let percent = Int(progress * 100)
+    private func percentageText(for value: Double) -> String {
+        let percent = Int(value * 100)
         return "\(percent)%"
     }
 }

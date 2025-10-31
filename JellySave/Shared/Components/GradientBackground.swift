@@ -23,7 +23,15 @@ public struct GradientBackground: View {
     private var gradient: LinearGradient {
         switch style {
         case .hero:
-            return LinearGradient(colors: [ThemeColor.primary, ThemeColor.primary.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.19, green: 0.82, blue: 0.70),
+                    ThemeColor.secondary,
+                    Color(red: 0.14, green: 0.45, blue: 0.88)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
         case .accent:
             return LinearGradient(colors: [ThemeColor.accent, ThemeColor.highlight], startPoint: .topLeading, endPoint: .bottomTrailing)
         case .surface:

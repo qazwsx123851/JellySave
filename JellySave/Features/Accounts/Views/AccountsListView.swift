@@ -25,28 +25,59 @@ struct AccountsListView: View {
 
                     ForEach(groupedAccounts) { section in
                         CardContainer(title: section.title, subtitle: "共 \(section.accounts.count) 個") {
-                            VStack(spacing: 12) {
+                            VStack(spacing: 16) {
                                 ForEach(section.accounts) { account in
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 6) {
-                                            Text(account.name)
-                                                .font(Constants.Typography.body.weight(.semibold))
-                                                .foregroundColor(ThemeColor.neutralDark)
-                                            HStack(spacing: 8) {
+                                    VStack(spacing: 12) {
+                                        HStack(alignment: .top, spacing: 16) {
+                                            accountIcon(for: account)
+                                            VStack(alignment: .leading, spacing: 8) {
+                                                Text(account.name)
+                                                    .font(Constants.Typography.body.weight(.semibold))
+                                                    .foregroundColor(ThemeColor.neutralDark)
+                                                    .lineLimit(2)
                                                 TagLabel(
                                                     text: account.type,
                                                     identifier: badgeIdentifier(for: account),
                                                     systemImage: badgeIcon(for: account)
                                                 )
-                                                Text("最後更新 2 天前")
+                                                Label("最後更新 2 天前", systemImage: "clock")
                                                     .font(Constants.Typography.caption)
-                                                    .foregroundColor(ThemeColor.neutralDark.opacity(0.5))
+                                                    .foregroundColor(ThemeColor.neutralDark.opacity(0.55))
+                                                    .lineLimit(1)
+                                            }
+                                            Spacer()
+                                            VStack(alignment: .trailing, spacing: 8) {
+                                                Text(NumberFormatter.twdString(from: account.balance))
+                                                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                                                    .foregroundColor(ThemeColor.neutralDark)
+                                                    .lineLimit(1)
+                                                    .minimumScaleFactor(0.85)
+                                                Text("月增幅 +2.1%")
+                                                    .font(Constants.Typography.caption)
+                                                    .foregroundColor(ThemeColor.success)
                                             }
                                         }
-                                        Spacer()
-                                        Text(NumberFormatter.twdString(from: account.balance))
-                                            .font(Constants.Typography.body.weight(.semibold))
-                                            .foregroundColor(ThemeColor.neutralDark)
+                                        HStack(spacing: 12) {
+                                            Button {
+                                                // 引導使用者前往帳戶設定。
+                                            } label: {
+                                                Label("管理", systemImage: "slider.horizontal.3")
+                                                    .labelStyle(.titleAndIcon)
+                                                    .font(Constants.Typography.caption.weight(.semibold))
+                                            }
+                                            .buttonStyle(.borderedProminent)
+                                            .tint(ThemeColor.primary.opacity(0.85))
+
+                                            Button {
+                                                // 安排通知設定快速入口。
+                                            } label: {
+                                                Label("通知", systemImage: "bell.badge")
+                                                    .font(Constants.Typography.caption.weight(.semibold))
+                                            }
+                                            .buttonStyle(.bordered)
+                                            .tint(ThemeColor.primary.opacity(0.4))
+                                            Spacer()
+                                        }
                                     }
                                     if account != section.accounts.last {
                                         Divider()
@@ -117,7 +148,7 @@ private extension AccountsListView {
 
     var summaryHeader: some View {
         CardContainer(title: "總覽", subtitle: "帳戶總覽", iconName: "wallet.pass") {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("總資產")
@@ -141,13 +172,17 @@ private extension AccountsListView {
                 Divider()
                     .background(ThemeColor.neutralLight)
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 12) {
                     Label("3 個帳戶連結 iCloud 同步", systemImage: "icloud")
                         .font(Constants.Typography.caption)
                         .foregroundColor(ThemeColor.neutralDark.opacity(0.7))
                     Label("1 個帳戶尚未設定通知", systemImage: "bell")
                         .font(Constants.Typography.caption)
                         .foregroundColor(ThemeColor.neutralDark.opacity(0.7))
+                    HStack(spacing: 8) {
+                        summaryChip(title: "同步正常", systemImage: "checkmark.circle.fill")
+                        summaryChip(title: "通知待設定", systemImage: "bell.badge")
+                    }
                 }
             }
         }
@@ -165,6 +200,43 @@ private struct AccountSummary: Identifiable, Equatable {
     let name: String
     let type: String
     let balance: Decimal
+}
+
+private extension AccountsListView {
+    @ViewBuilder
+    func accountIcon(for account: AccountSummary) -> some View {
+        let identifier = badgeIdentifier(for: account)
+        let baseColor: Color = {
+            switch identifier {
+            case "bank": return ThemeColor.primary.opacity(0.15)
+            case "investment": return ThemeColor.warning.opacity(0.18)
+            case "cash": return ThemeColor.success.opacity(0.18)
+            default: return ThemeColor.neutralLight.opacity(0.45)
+            }
+        }()
+        ZStack {
+            RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
+                .fill(baseColor)
+                .frame(width: 48, height: 48)
+            Image(systemName: badgeIcon(for: account))
+                .foregroundColor(ThemeColor.neutralDark)
+                .font(.title3)
+        }
+        .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    func summaryChip(title: String, systemImage: String) -> some View {
+        Label(title, systemImage: systemImage)
+            .font(Constants.Typography.caption.weight(.semibold))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(ThemeColor.neutralLight.opacity(0.4))
+            )
+            .foregroundColor(ThemeColor.neutralDark.opacity(0.75))
+    }
 }
 
 #Preview {

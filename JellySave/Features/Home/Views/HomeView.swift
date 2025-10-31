@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct HomeView: View {
     private let quickActions: [QuickAction] = [
@@ -27,6 +28,18 @@ struct HomeView: View {
             systemImage: "bell.badge"
         )
     ]
+    private let monthlyTrend: [MonthlyTrendPoint] = [
+        MonthlyTrendPoint(label: "5 月", value: 680_000),
+        MonthlyTrendPoint(label: "6 月", value: 702_500),
+        MonthlyTrendPoint(label: "7 月", value: 719_000),
+        MonthlyTrendPoint(label: "8 月", value: 735_500),
+        MonthlyTrendPoint(label: "9 月", value: 789_200),
+        MonthlyTrendPoint(label: "10 月", value: 820_000)
+    ]
+
+    @State private var displayedMonthlyTrend: [MonthlyTrendPoint] = []
+    @State private var trendAnimationTask: Task<Void, Never>?
+    @State private var hasAnimatedMonthlyTrend = false
 
     var body: some View {
         NavigationStack {
@@ -38,6 +51,7 @@ struct HomeView: View {
                 }
                 .sectionPadding()
                 .padding(.vertical, 24)
+                .onDisappear(perform: cancelTrendAnimation)
             }
             .background(ThemeColor.background(for: colorScheme).ignoresSafeArea())
             .navigationTitle("首頁")
@@ -69,7 +83,7 @@ private extension HomeView {
                 HStack(spacing: 14) {
                     ZStack {
                         Circle()
-                            .fill(Color.white.opacity(0.18))
+                            .fill(Color.white.opacity(0.22))
                             .frame(width: 48, height: 48)
                         Image(systemName: "leaf.fill")
                             .foregroundColor(.white)
@@ -88,38 +102,92 @@ private extension HomeView {
                 Text(NumberFormatter.twdString(from: Decimal(820_000)))
                     .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundStyle(Color.white)
+                    .minimumScaleFactor(0.85)
 
-                HStack(spacing: 16) {
-                    ForEach(recentInsights) { insight in
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack(spacing: 6) {
-                                Image(systemName: insight.systemImage)
-                                    .foregroundStyle(Color.white.opacity(0.75))
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(Array(recentInsights.enumerated()), id: \.element.id) { index, insight in
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: insight.systemImage)
+                                .foregroundStyle(Color.white.opacity(0.8))
+                                .font(.title3)
+                                .accessibilityHidden(true)
+                            VStack(alignment: .leading, spacing: 4) {
                                 Text(insight.title)
                                     .font(Constants.Typography.caption)
                                     .foregroundStyle(Color.white.opacity(0.9))
+                                Text(insight.value)
+                                    .font(Constants.Typography.body.weight(.semibold))
+                                    .foregroundStyle(Color.white)
+                                    .lineLimit(2)
+                                Text(insight.descriptor)
+                                    .font(Constants.Typography.caption)
+                                    .foregroundStyle(Color.white.opacity(0.7))
                             }
-                            Text(insight.value)
-                                .font(Constants.Typography.body.weight(.semibold))
-                                .foregroundStyle(Color.white)
-                            Text(insight.descriptor)
-                                .font(Constants.Typography.caption)
-                                .foregroundStyle(Color.white.opacity(0.7))
+                            Spacer()
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        if index != recentInsights.count - 1 {
+                            Divider()
+                                .background(Color.white.opacity(0.2))
+                        }
                     }
                 }
+                .dynamicTypeSize(.medium ... .accessibility3)
 
                 CustomButton("新增交易", iconName: "sparkles", style: .secondary) {}
             }
             .padding(24)
         }
         .frame(maxWidth: .infinity)
+        .dynamicTypeSize(.medium ... .accessibility3)
     }
 
     var monthlyTrendCard: some View {
         CardContainer(title: "月度趨勢", subtitle: "最近 6 個月", iconName: "chart.line.uptrend.xyaxis", actionTitle: "查看詳情") {
-            placeholderChart
+            // 透過 Swift Charts 呈現折線與面積，並帶入漸進動畫。
+            Chart(displayedMonthlyTrend) { point in
+                AreaMark(
+                    x: .value("月份", point.label),
+                    y: .value("資產", point.value)
+                )
+                .foregroundStyle(
+                    .linearGradient(
+                        Gradient(colors: [ThemeColor.primary.opacity(0.35), ThemeColor.secondary.opacity(0.1)]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                LineMark(
+                    x: .value("月份", point.label),
+                    y: .value("資產", point.value)
+                )
+                .lineStyle(StrokeStyle(lineWidth: 3, lineCap: .round))
+                .foregroundStyle(ThemeColor.primary)
+                .interpolationMethod(.catmullRom)
+                PointMark(
+                    x: .value("月份", point.label),
+                    y: .value("資產", point.value)
+                )
+                .foregroundStyle(ThemeColor.primary)
+                .symbolSize(40)
+            }
+            .chartYAxis {
+                AxisMarks(position: .leading) { _ in
+                    AxisValueLabel(format: .currency(code: "TWD"))
+                        .foregroundStyle(ThemeColor.neutralDark.opacity(0.7))
+                }
+            }
+            .chartXAxis {
+                AxisMarks(values: displayedMonthlyTrend.map(\.label))
+            }
+            .chartPlotStyle { plot in
+                plot.background(Color.clear)
+                    .cornerRadius(Constants.CornerRadius.medium)
+            }
+            .frame(height: 200)
+            .padding(.top, 12)
+            .animation(.easeInOut(duration: 0.3), value: displayedMonthlyTrend)
+            .onAppear(perform: animateMonthlyTrendIfNeeded)
+            .onDisappear(perform: cancelTrendAnimation)
         }
     }
 
@@ -141,9 +209,12 @@ private extension HomeView {
                                 Text(action.title)
                                     .font(Constants.Typography.body.weight(.semibold))
                                     .foregroundColor(ThemeColor.neutralDark)
+                                    .lineLimit(2)
+                                    .minimumScaleFactor(0.9)
                                 Text(action.subtitle)
                                     .font(Constants.Typography.caption)
                                     .foregroundColor(ThemeColor.neutralDark.opacity(0.6))
+                                    .lineLimit(2)
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -163,35 +234,12 @@ private extension HomeView {
                     }
                     .buttonStyle(.plain)
                     .pressableCardStyle()
+                    .contentShape(Rectangle())
+                    .accessibilityLabel(Text("\(action.title)，\(action.subtitle)"))
                 }
             }
         }
         .cardBackground(showShadow: false)
-    }
-
-    var placeholderChart: some View {
-        GeometryReader { geometry in
-            let height = geometry.size.height
-            let width = geometry.size.width
-            let points: [CGFloat] = [0.2, 0.35, 0.45, 0.4, 0.55, 0.72]
-            let step = width / CGFloat(points.count - 1)
-
-            Path { path in
-                guard let first = points.first else { return }
-                path.move(to: CGPoint(x: 0, y: height * (1 - first)))
-                for (index, value) in points.enumerated() where index > 0 {
-                    let point = CGPoint(x: CGFloat(index) * step, y: height * (1 - value))
-                    path.addLine(to: point)
-                }
-            }
-            .stroke(ThemeColor.primary.opacity(0.7), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-            .background(
-                RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                    .fill(ThemeColor.neutralLight.opacity(0.4))
-            )
-        }
-        .frame(height: 180)
-        .padding(.top, 12)
     }
 }
 
@@ -209,6 +257,44 @@ private struct Insight: Identifiable {
     let descriptor: String
     let systemImage: String
 }
+
+private struct MonthlyTrendPoint: Identifiable, Equatable {
+    let id = UUID()
+    let label: String
+    let value: Double
+}
+
+private extension HomeView {
+    /// 只在初次出現時觸發折線動畫。
+    func animateMonthlyTrendIfNeeded() {
+        guard !hasAnimatedMonthlyTrend, displayedMonthlyTrend.isEmpty else { return }
+        hasAnimatedMonthlyTrend = true
+        trendAnimationTask?.cancel()
+        trendAnimationTask = Task {
+            for (index, point) in monthlyTrend.enumerated() {
+                if Task.isCancelled { break }
+                await MainActor.run {
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        displayedMonthlyTrend.append(point)
+                    }
+                }
+                if index != monthlyTrend.count - 1 {
+                    try? await Task.sleep(nanoseconds: 160_000_000)
+                }
+            }
+            trendAnimationTask = nil
+        }
+    }
+
+    /// 離開畫面時中止動畫，避免重複排程。
+    func cancelTrendAnimation() {
+        trendAnimationTask?.cancel()
+        trendAnimationTask = nil
+        displayedMonthlyTrend = []
+        hasAnimatedMonthlyTrend = false
+    }
+}
+
 
 #Preview {
     HomeView()
