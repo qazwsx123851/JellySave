@@ -94,6 +94,12 @@ JellySave/
     └── Info.plist                  # 應用程式配置
 ```
 
+## 開發指南
+
+- 主題與設計系統：`Shared/Extensions/Color+Theme.swift`、`Shared/Utilities/Constants.swift` 與 `ThemeService` 定義顏色、字體與主題切換邏輯，詳細說明見 `docs/DesignSystem.md`。
+- 共用元件庫：`Shared/Components/` 內提供按鈕、卡片、指示器、輸入欄位與空狀態等 SwiftUI 元件。
+- 動畫與骨架：`Shared/Components/Animations/` 與 `Shared/Components/Loading/` 封裝 Lottie 與 SkeletonView，使用方式參考 `docs/Animations.md`。
+
 ## 資料模型設計
 
 ### 支援的帳戶類型
