@@ -1,0 +1,51 @@
+# JellySave 開發工作指引（Specification-Driven）
+
+## 適用範圍
+此檔案適用於整個儲存庫。若子資料夾另有 `AGENTS.md`，則以較近層級的指引為優先。
+
+## 規格驅動的流程
+1. **來源文件**：所有需求與設計決策必須對應到下列文件之一：
+   - `requirements.md`（需求 1–13 與其驗收標準）
+   - `design.md`（系統架構、資料模型、UI/動畫規範）
+   - `tasks.md`（52 項工作，含主任務與子任務）
+   - `JellySave/docs/DesignSystem.md` 與 `JellySave/docs/Animations.md`（視覺/動畫細節）
+2. **需求追溯**：每次提交需在 commit 訊息與 PR 描述中標明對應的需求（格式：`REQ-<number>`，例如需求 1 → `REQ-1`）與任務（格式：`TASK-<major>.<sub>`，無子任務則只寫主要編號）。若更新同時涵蓋多個需求/任務，請全部列出。
+3. **作業順序**：依 `tasks.md` 的順序前進。若某工作因前置條件未完成而受阻，記錄原因並停止對應開發，避免跳過階段。
+4. **非規格變更**：若要新增與文件不符的功能或調整，需先提交文件更新並取得核准，否則不得修改程式碼。
+
+## 架構與程式碼規範
+- 採用 **SwiftUI + MVVM**：
+  - View 層：保持展示邏輯，禁止包含業務規則或資料存取。
+  - ViewModel：繼承 `ObservableObject`，透過 `@Published` 公開狀態並連接 Combine 資料流。
+  - Service：以 `Protocol` 定義介面，實作需可被注入與測試。
+- **資料層**：
+  - 核心資料使用 Core Data，模型命名需與 `design.md` 資料模型一致（`Account`, `SavingGoal`, `AssetSnapshot` 等）。
+  - 敏感資訊（例如解鎖密碼）必須存於 Keychain。金額使用 `NSDecimalNumber`。
+- **UI / 設計系統**：
+  - 配色、字體、間距、圓角與陰影遵循 `DesignSystem.md` 與 `design.md` 中的品牌色與設計常數。
+  - Component 命名與檔名採 PascalCase（例如 `ProgressRingView`）。共用修飾符與擴充放在 `Shared` 或 `Features/<Module>/Components`。
+  - 必須同時支援淺色與深色模式、Dynamic Type，並確保對比度符合 WCAG 2.1 AA。
+  - 動畫需符合 `Animations.md` 的節奏與緩動規範，確保 60fps 流暢度。
+- **國際化與在地化**：所有顯示字串集中於 `Resources/Localization`，以繁體中文為預設，未來易於擴充。
+- **可存取性**：新增或調整 UI 元件時，要為可互動元素提供 VoiceOver label / hint，並測試主要流程。
+
+## 測試與品質保證
+- **單元測試**：對 Service 與 ViewModel 層維持 ≥80% 覆蓋率。新增功能時同步補齊測試；若覆蓋率下降需在 PR 中說明並提出補救計畫。
+- **UI / Snapshot 測試**：更新視覺或互動行為時，需新增或更新對應的 UI 測試。變更動畫或轉場時，提供錄影或描述測試方法。
+- **效能要求**：
+  - App 啟動時間 < 2 秒（依 `requirements.md` 與 `tasks.md` 里程碑）。
+  - 記憶體使用量 < 100MB；動畫保持 60fps。
+  - 若測試工具或硬體限制導致無法驗證，需記錄量測方法與阻礙。
+- **工具命令**：在提交前執行 `swift test` 及可用的 UI / lint 檢查。無法執行時在 PR 中註明原因。
+
+## 文件維護
+- 只在規格確定改動時更新 `requirements.md`、`design.md`、`tasks.md`，並於 PR 中說明核准來源。
+- 新增共用元件、動畫或設計變化時，同步更新 `JellySave/docs` 相關文件並標註版本日期。
+- 在程式碼中以 `// TODO(REQ-*, TASK-*)` 格式標註待辦事項，確保與需求/任務對應。
+
+## 版本控制
+- 單一功能或修復保持最小可行提交，使用 `feat:`, `fix:`, `chore:` 等 Conventional Commits 前綴。
+- Commit 與 PR 訊息需描述變更內容、影響的需求/任務、測試結果。
+- 嚴禁強制推送共享分支；如需清理歷史請使用互動式 rebase 並確認與團隊同步。
+
+> 請持續對照需求與設計文件，確保每個變更可追溯、可驗證且符合 JellySave 的產品願景。
