@@ -28,6 +28,10 @@
 		1C6A3F0C29E9AA0600D4E5E2 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2C29E9AA0600D4E5E2 /* LottieView.swift */; };
 		1C6A3F0D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift */; };
 		1C6A3F0E29E9AA0600D4E5E2 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */; };
+		143734D90A314F9A8F7E2C8B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B04B452D964393A320A2DB /* MainTabView.swift */; };
+		191EB9443F5548B385586B56 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A077D6A96E418DB9C4D3BA /* AccountsView.swift */; };
+		B32D227610674DFA9573E3B2 /* SavingGoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B92E0EE134E73BEC5F4D7 /* SavingGoalsView.swift */; };
+		CE181B6F447C47EFAB9A3CBD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253BE04036244FB7A944209C /* SettingsView.swift */; };
 		4D9FB41A2EB8A9A4003821A3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FB4192EB8A9A4003821A3 /* Lottie */; };
 		4D9FB41F2EB8A9DA003821A3 /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FB41E2EB8A9DA003821A3 /* SkeletonView */; };
 		4D9FB4222EB8AB37003821A3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4D9FB4212EB8AB37003821A3 /* Lottie */; };
@@ -59,6 +63,10 @@
 		1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
 		1C6A3F3829E9AA0600D4E5E2 /* DesignSystem.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DesignSystem.md; sourceTree = "<group>"; };
 		1C6A3F3929E9AA0600D4E5E2 /* Animations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Animations.md; sourceTree = "<group>"; };
+		15B04B452D964393A320A2DB /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		253BE04036244FB7A944209C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		58A077D6A96E418DB9C4D3BA /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
+		EA7B92E0EE134E73BEC5F4D7 /* SavingGoalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingGoalsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +133,7 @@
 				1C6A3E9929E9AA0300D4E5E2 /* Accounts */,
 				1C6A3E9C29E9AA0300D4E5E2 /* SavingGoals */,
 				1C6A3E9F29E9AA0300D4E5E2 /* Settings */,
+				38487218E1D846459E192E9E /* Root */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -165,6 +174,7 @@
 		1C6A3E9A29E9AA0300D4E5E2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58A077D6A96E418DB9C4D3BA /* AccountsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +198,7 @@
 		1C6A3E9D29E9AA0300D4E5E2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EA7B92E0EE134E73BEC5F4D7 /* SavingGoalsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -211,6 +222,23 @@
 		1C6A3EA029E9AA0300D4E5E2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				253BE04036244FB7A944209C /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		38487218E1D846459E192E9E /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				9751BF2D06204FC7B2358335 /* Views */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		9751BF2D06204FC7B2358335 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				15B04B452D964393A320A2DB /* MainTabView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +272,55 @@
 				1C6A3F3629E9AA0600D4E5E2 /* Misc */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		1C6A3EA429E9AA0300D4E5E2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1C6A3F2029E9AA0600D4E5E2 /* Color+Theme.swift */,
+				1C6A3F2729E9AA0600D4E5E2 /* NumberFormatter+Currency.swift */,
+				1C6A3F2B29E9AA0600D4E5E2 /* View+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1C6A3EA529E9AA0300D4E5E2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1C6A3E8429E9AA0200D4E5E2 /* JellySaveError.swift */,
+				1C6A3F2129E9AA0600D4E5E2 /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		1C6A3EA629E9AA0300D4E5E2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1C6A3E8529E9AA0200D4E5E2 /* Info.plist */,
+				1C6A3E8629E9AA0200D4E5E2 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1C6A3EA729E9AA0300D4E5E2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C6A3E8729E9AA0200D4E5E2 /* JellySave.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1C6A3EB729E9AA0500D4E5E2 /* JellySave */ = {
+			isa = PBXGroup;
+			children = (
+				1C6A3E9129E9AA0300D4E5E2 /* App */,
+				1C6A3E9229E9AA0300D4E5E2 /* Core */,
+				1C6A3E9529E9AA0300D4E5E2 /* Features */,
+				1C6A3EA229E9AA0300D4E5E2 /* Shared */,
+				1C6A3F3729E9AA0600D4E5E2 /* docs */,
+				1C6A3EA629E9AA0300D4E5E2 /* Resources */,
+			);
+			path = JellySave;
 			sourceTree = "<group>";
 		};
 		1C6A3F3029E9AA0600D4E5E2 /* Buttons */ = {
@@ -303,55 +380,6 @@
 				1C6A3F2A29E9AA0600D4E5E2 /* GradientBackground.swift */,
 			);
 			path = Misc;
-			sourceTree = "<group>";
-		};
-		1C6A3EA429E9AA0300D4E5E2 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				1C6A3F2029E9AA0600D4E5E2 /* Color+Theme.swift */,
-				1C6A3F2729E9AA0600D4E5E2 /* NumberFormatter+Currency.swift */,
-				1C6A3F2B29E9AA0600D4E5E2 /* View+Extensions.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		1C6A3EA529E9AA0300D4E5E2 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				1C6A3E8429E9AA0200D4E5E2 /* JellySaveError.swift */,
-				1C6A3F2129E9AA0600D4E5E2 /* Constants.swift */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		1C6A3EA629E9AA0300D4E5E2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				1C6A3E8529E9AA0200D4E5E2 /* Info.plist */,
-				1C6A3E8629E9AA0200D4E5E2 /* Assets.xcassets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		1C6A3EA729E9AA0300D4E5E2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1C6A3E8729E9AA0200D4E5E2 /* JellySave.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		1C6A3EB729E9AA0500D4E5E2 /* JellySave */ = {
-			isa = PBXGroup;
-			children = (
-				1C6A3E9129E9AA0300D4E5E2 /* App */,
-				1C6A3E9229E9AA0300D4E5E2 /* Core */,
-				1C6A3E9529E9AA0300D4E5E2 /* Features */,
-				1C6A3EA229E9AA0300D4E5E2 /* Shared */,
-				1C6A3F3729E9AA0600D4E5E2 /* docs */,
-				1C6A3EA629E9AA0300D4E5E2 /* Resources */,
-			);
-			path = JellySave;
 			sourceTree = "<group>";
 		};
 		1C6A3F3729E9AA0600D4E5E2 /* docs */ = {
@@ -443,6 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				143734D90A314F9A8F7E2C8B /* MainTabView.swift in Sources */,
 				1C6A3F0E29E9AA0600D4E5E2 /* CountingLabel.swift in Sources */,
 				1C6A3F0D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift in Sources */,
 				1C6A3F0C29E9AA0600D4E5E2 /* LottieView.swift in Sources */,
@@ -461,6 +490,9 @@
 				1C6A3E7429E9AA0100D4E5E2 /* JellySaveError.swift in Sources */,
 				1C6A3E7329E9AA0100D4E5E2 /* CoreDataStack.swift in Sources */,
 				1C6A3E7229E9AA0100D4E5E2 /* HomeView.swift in Sources */,
+				191EB9443F5548B385586B56 /* AccountsView.swift in Sources */,
+				B32D227610674DFA9573E3B2 /* SavingGoalsView.swift in Sources */,
+				CE181B6F447C47EFAB9A3CBD /* SettingsView.swift in Sources */,
 				1C6A3E7129E9AA0100D4E5E2 /* AppDelegate.swift in Sources */,
 				1C6A3E7029E9AA0100D4E5E2 /* JellySaveApp.swift in Sources */,
 			);
@@ -598,6 +630,8 @@
 		1C6A3EB529E9AA0400D4E5E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -621,6 +655,8 @@
 		1C6A3EB629E9AA0400D4E5E2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";

@@ -7,7 +7,7 @@ struct JellySaveApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainTabView()
                 .environmentObject(themeService)
                 .preferredColorScheme(themeService.currentTheme.preferredColorScheme)
         }
