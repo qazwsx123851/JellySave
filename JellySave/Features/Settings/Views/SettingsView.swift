@@ -1,21 +1,18 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
-    @State private var notificationsEnabled = true
-    @State private var notificationTime = DateComponents(hour: 9, minute: 30)
-    @State private var selectedQuoteType = 0
-    @State private var selectedTheme: AppTheme = .system
-    @State private var biometricEnabled = true
-    @State private var autoLockDuration = 30
-    @State private var analyticsEnabled = false
-
-    private let quoteTypes = ["儲蓄激勵", "投資建議"]
+    @EnvironmentObject private var themeService: ThemeService
+    @StateObject private var viewModel = SettingsViewModel()
+    @State private var showShareSheet = false
+    @State private var isImportingBackup = false
+    @State private var showClearAlert = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: Constants.Spacing.xl) {
-                    notificationSection
+                    NotificationSettingsView(viewModel: viewModel)
                     themeSection
                     securitySection
                     dataManagementSection
@@ -24,9 +21,58 @@ struct SettingsView: View {
                 .padding(.horizontal, Constants.Spacing.md)
                 .padding(.vertical, Constants.Spacing.xl)
                 .maxWidthLayout()
+                .onAppear {
+                    viewModel.updateThemeService(themeService)
+                }
             }
             .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("設定")
+        }
+        .sheet(isPresented: $showShareSheet, onDismiss: {
+            viewModel.resetExportedFileURL()
+        }) {
+            if let url = viewModel.exportedFileURL {
+                ShareSheet(activityItems: [url])
+            } else {
+                Text("匯出檔案不存在")
+                    .padding()
+            }
+        }
+        .fileImporter(isPresented: $isImportingBackup, allowedContentTypes: [.json]) { result in
+            switch result {
+            case .success(let url):
+                let securityScoped = url.startAccessingSecurityScopedResource()
+                Task {
+                    defer {
+                        if securityScoped {
+                            url.stopAccessingSecurityScopedResource()
+                        }
+                    }
+                    await viewModel.importBackup(from: url)
+                }
+            case .failure(let error):
+                viewModel.errorMessage = error.localizedDescription
+            }
+        }
+        .alert("清除本機資料？", isPresented: $showClearAlert) {
+            Button("取消", role: .cancel) {}
+            Button("清除", role: .destructive) {
+                Task {
+                    await viewModel.clearAllData()
+                }
+            }
+        } message: {
+            Text("此操作會刪除所有帳戶、儲蓄目標與通知設定，且無法復原。")
+        }
+        .alert("發生錯誤", isPresented: errorAlertBinding) {
+            Button("確定", role: .cancel) {}
+        } message: {
+            Text(viewModel.errorMessage ?? "")
+        }
+        .alert("操作完成", isPresented: successAlertBinding) {
+            Button("了解", role: .cancel) {}
+        } message: {
+            Text(viewModel.successMessage ?? "")
         }
     }
 }
@@ -34,38 +80,6 @@ struct SettingsView: View {
 // MARK: - Sections
 
 private extension SettingsView {
-    var notificationSection: some View {
-        SettingsCard(title: "通知設定", icon: "bell.badge.fill", accent: ThemeColor.primary.color) {
-            Toggle(isOn: $notificationsEnabled) {
-                VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
-                    Text("啟用每日提醒")
-                        .font(Constants.Typography.body.weight(.semibold))
-                    Text("在指定時間推送激勵通知")
-                        .font(Constants.Typography.caption)
-                        .foregroundStyle(Color.textSecondary)
-                }
-            }
-            .toggleStyle(SwitchToggleStyle(tint: ThemeColor.primary.color))
-
-            Divider()
-
-            VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
-                Text("通知時間")
-                    .font(Constants.Typography.body.weight(.semibold))
-                TimeSelector(time: $notificationTime)
-
-                Picker("通知內容", selection: $selectedQuoteType) {
-                    ForEach(quoteTypes.indices, id: \.self) { index in
-                        Text(quoteTypes[index]).tag(index)
-                    }
-                }
-                .pickerStyle(SegmentedPickerStyle())
-            }
-            .disabled(!notificationsEnabled)
-            .opacity(notificationsEnabled ? 1 : 0.5)
-        }
-    }
-
     var themeSection: some View {
         SettingsCard(title: "主題外觀", icon: "paintpalette.fill", accent: ThemeColor.secondary.color) {
             VStack(alignment: .leading, spacing: Constants.Spacing.md) {
@@ -82,7 +96,7 @@ private extension SettingsView {
                                 .foregroundStyle(Color.textSecondary)
                         }
                         Spacer()
-                        RadioIndicator(isSelected: selectedTheme == theme)
+                        RadioIndicator(isSelected: viewModel.selectedTheme == theme)
                     }
                     .padding(Constants.Spacing.md)
                     .background(
@@ -90,18 +104,20 @@ private extension SettingsView {
                             .fill(Color.surfaceSecondary)
                     )
                     .onTapGesture {
-                        selectedTheme = theme
+                        viewModel.changeTheme(to: theme)
                     }
                 }
 
-                CustomButton(title: "同步系統今日色彩", style: .outline, action: {})
+                CustomButton(title: "同步系統設定", style: .outline) {
+                    viewModel.changeTheme(to: .system)
+                }
             }
         }
     }
 
     var securitySection: some View {
         SettingsCard(title: "安全與隱私", icon: "lock.shield.fill", accent: ThemeColor.success.color) {
-            Toggle(isOn: $biometricEnabled) {
+            Toggle(isOn: .constant(true)) {
                 VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
                     Text("啟用 Face ID")
                         .font(Constants.Typography.body.weight(.semibold))
@@ -111,53 +127,59 @@ private extension SettingsView {
                 }
             }
             .toggleStyle(SwitchToggleStyle(tint: ThemeColor.success.color))
+            .disabled(true)
+            .opacity(0.6)
 
             Divider()
 
             VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
                 Text("自動鎖定")
                     .font(Constants.Typography.body.weight(.semibold))
-                Stepper(value: $autoLockDuration, in: 15...120, step: 15) {
-                    Text("閒置 \(autoLockDuration) 秒後鎖定")
+                Stepper(value: .constant(30), in: 15...120, step: 15) {
+                    Text("閒置 30 秒後鎖定")
                         .font(Constants.Typography.body)
-                        .foregroundStyle(Color.textPrimary)
-                }
-            }
-
-            Toggle(isOn: $analyticsEnabled) {
-                VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
-                    Text("匿名字分析")
-                        .font(Constants.Typography.body.weight(.semibold))
-                    Text("協助優化體驗，不傳送個人資料")
-                        .font(Constants.Typography.caption)
                         .foregroundStyle(Color.textSecondary)
                 }
+                .disabled(true)
+                .opacity(0.6)
             }
-            .toggleStyle(SwitchToggleStyle(tint: ThemeColor.success.color))
         }
     }
 
     var dataManagementSection: some View {
         SettingsCard(title: "資料管理", icon: "externaldrive.fill", accent: ThemeColor.accent.color) {
             VStack(spacing: Constants.Spacing.md) {
-                DataManagementRow(
-                    title: "匯出資料備份",
-                    subtitle: "產生加密檔案並儲存到 iCloud Drive",
-                    icon: "arrow.down.circle.fill"
-                )
+                exportButton
 
-                DataManagementRow(
-                    title: "從備份還原",
-                    subtitle: "匯入先前匯出的 JellySave 備份檔",
-                    icon: "arrow.up.circle.fill"
-                )
+                Button {
+                    isImportingBackup = true
+                } label: {
+                    DataManagementRow(
+                        title: "從備份還原",
+                        subtitle: "匯入先前匯出的 JellySave 備份檔",
+                        icon: "arrow.up.circle.fill"
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(viewModel.isProcessingBackup)
 
-                DataManagementRow(
-                    title: "清除本機資料",
-                    subtitle: "刪除所有帳戶與目標資料",
-                    icon: "trash.fill",
-                    iconColor: ThemeColor.accent.color.opacity(0.85)
-                )
+                Button {
+                    showClearAlert = true
+                } label: {
+                    DataManagementRow(
+                        title: "清除本機資料",
+                        subtitle: "刪除所有帳戶與目標資料",
+                        icon: "trash.fill",
+                        iconColor: ThemeColor.accent.color.opacity(0.85)
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(viewModel.isProcessingBackup)
+            }
+            if viewModel.isProcessingBackup {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
         }
     }
@@ -165,7 +187,7 @@ private extension SettingsView {
     var aboutSection: some View {
         SettingsCard(title: "應用程式資訊", icon: "info.circle.fill", accent: Color.textSecondary) {
             VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
-                InfoRow(label: "版本", value: "2.0.0 (靜態範例)")
+                InfoRow(label: "版本", value: "2.0.0 (示範)")
                 InfoRow(label: "資料儲存", value: "完全離線 / Core Data")
                 InfoRow(label: "開發團隊", value: "JellySave Studio")
 
@@ -196,9 +218,52 @@ private extension SettingsView {
     }
 }
 
+private extension SettingsView {
+    var exportButton: some View {
+        Button {
+            Task {
+                await viewModel.exportBackup()
+                if viewModel.exportedFileURL != nil {
+                    showShareSheet = true
+                }
+            }
+        } label: {
+            DataManagementRow(
+                title: "匯出資料備份",
+                subtitle: "產生加密檔案並儲存到 iCloud Drive",
+                icon: "arrow.down.circle.fill"
+            )
+        }
+        .buttonStyle(.plain)
+        .disabled(viewModel.isProcessingBackup)
+    }
+
+    var errorAlertBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { newValue in
+                if !newValue {
+                    viewModel.errorMessage = nil
+                }
+            }
+        )
+    }
+
+    var successAlertBinding: Binding<Bool> {
+        Binding(
+            get: { viewModel.successMessage != nil },
+            set: { newValue in
+                if !newValue {
+                    viewModel.successMessage = nil
+                }
+            }
+        )
+    }
+}
+
 // MARK: - Subviews
 
-private struct SettingsCard<Content: View>: View {
+struct SettingsCard<Content: View>: View {
     let title: String
     let icon: String
     let accent: Color
@@ -214,36 +279,6 @@ private struct SettingsCard<Content: View>: View {
                 content
             }
         }
-    }
-}
-
-private struct TimeSelector: View {
-    @Binding var time: DateComponents
-
-    var body: some View {
-        HStack(spacing: Constants.Spacing.md) {
-            Picker("時", selection: Binding(get: { time.hour ?? 0 }, set: { time.hour = $0 })) {
-                ForEach(0..<24) { hour in
-                    Text(String(format: "%02d 時", hour)).tag(hour)
-                }
-            }
-            .pickerStyle(WheelPickerStyle())
-            .frame(maxWidth: 140)
-
-                Picker("分", selection: Binding(get: { time.minute ?? 0 }, set: { time.minute = $0 })) {
-                    ForEach(Array(stride(from: 0, through: 55, by: 5)), id: \.self) { minute in
-                    Text(String(format: "%02d 分", minute)).tag(minute)
-                }
-            }
-            .pickerStyle(WheelPickerStyle())
-            .frame(maxWidth: 140)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 140)
-        .background(
-            RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                .fill(Color.surfaceSecondary)
-        )
     }
 }
 

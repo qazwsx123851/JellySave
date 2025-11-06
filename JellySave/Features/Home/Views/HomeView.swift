@@ -2,10 +2,10 @@ import Charts
 import SwiftUI
 
 struct HomeView: View {
-    private let overview = HomeOverview.sample
-    private let monthlyTrend = MonthlyTrendPoint.sampleSixMonths()
-    private let quickActions = HomeQuickAction.sampleActions
+    @StateObject private var viewModel = HomeViewModel()
     @Environment(\.colorScheme) private var colorScheme
+
+    private let quickActions = HomeQuickAction.sampleActions
 
     var body: some View {
         NavigationStack {
@@ -22,6 +22,9 @@ struct HomeView: View {
             }
             .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("首頁")
+            .refreshable {
+                await viewModel.refresh()
+            }
         }
     }
 }
@@ -30,130 +33,25 @@ struct HomeView: View {
 
 private extension HomeView {
     var heroCard: some View {
-        VStack(alignment: .leading, spacing: Constants.Spacing.lg) {
-            HStack(spacing: Constants.Spacing.sm) {
-                Text("本月總資產")
-                    .font(.caption.weight(.semibold))
-                    .padding(.vertical, Constants.Spacing.xs)
-                    .padding(.horizontal, Constants.Spacing.sm)
-                    .background(
-                        Capsule()
-                            .fill(Color.white.opacity(0.2))
-                    )
-                    .foregroundStyle(Color.white)
-                Text(overview.lastUpdatedText)
-                    .font(Constants.Typography.caption.weight(.medium))
-                    .foregroundStyle(Color.white.opacity(0.72))
-            }
-
-            Text(overview.totalAssetsText)
-                .font(Constants.Typography.hero)
-                .foregroundStyle(Color.white)
-
-            VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
-                HStack(spacing: Constants.Spacing.xs) {
-                    Image(systemName: overview.trendIcon)
-                        .font(.system(size: 18, weight: .semibold))
-                    Text(overview.trendDescription)
-                }
-                .font(Constants.Typography.body.weight(.semibold))
-                .foregroundStyle(Color.white)
-
-                Text(overview.trendSubheadline)
-                    .font(Constants.Typography.caption)
-                    .foregroundStyle(Color.white.opacity(0.8))
-            }
-
-            Divider()
-                .background(Color.white.opacity(0.2))
-
-            HStack(spacing: Constants.Spacing.lg) {
-                ForEach(overview.highlights) { highlight in
-                    VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
-                        Text(highlight.title)
-                            .font(Constants.Typography.caption)
-                            .foregroundStyle(Color.white.opacity(0.75))
-                        Text(highlight.value)
-                            .font(Constants.Typography.body.weight(.semibold))
-                            .foregroundStyle(.white)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-        }
-        .padding(Constants.Spacing.xl)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(heroGradientBackground)
-        .clipShape(RoundedRectangle(cornerRadius: Constants.CornerRadius.large, style: .continuous))
-        .cardShadow(.medium)
-        .accessibilityElement(children: .contain)
+        TotalAssetsCard(
+            summary: viewModel.summary,
+            lastUpdatedText: lastUpdatedText,
+            trendIconName: trendIcon,
+            trendDescription: trendDescription,
+            trendSubtitle: trendSubtitle
+        )
     }
 
     var monthlyTrendSection: some View {
         CardContainer(
             title: "6 個月資產趨勢",
-            subtitle: "依據靜態樣本資料顯示",
+            subtitle: "依據最新資料計算",
             icon: Image(systemName: "chart.line.uptrend.xyaxis")
         ) {
-            Chart(monthlyTrend) { point in
-                LineMark(
-                    x: .value("月份", point.date),
-                    y: .value("資產金額", point.amountDouble)
-                )
-                .foregroundStyle(
-                    Gradient(colors: [
-                        Color.primaryMint,
-                        Color.secondarySky
-                    ])
-                )
-                .interpolationMethod(.catmullRom)
-
-                AreaMark(
-                    x: .value("月份", point.date),
-                    y: .value("資產金額", point.amountDouble)
-                )
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [
-                            Color.primaryMint.opacity(0.35),
-                            Color.primaryMint.opacity(0.05)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-                .interpolationMethod(.catmullRom)
-            }
-            .chartXAxis {
-                AxisMarks(values: .stride(by: .month)) { value in
-                    AxisGridLine()
-                    AxisValueLabel(format: .dateTime.month(.narrow))
-                }
-            }
-            .chartYAxis {
-                AxisMarks(position: .leading) { y in
-                    AxisGridLine()
-                    AxisValueLabel {
-                        if let amount = y.as(Double.self) {
-                            Text(NumberFormatter.formattedCurrencyString(for: Decimal(amount)))
-                                .font(Constants.Typography.caption)
-                        }
-                    }
-                }
-            }
-            .frame(height: 240)
-            .accessibilityElement(children: .contain)
-
-            Divider()
-
-            VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
-                Text("摘要")
-                    .font(Constants.Typography.body.weight(.semibold))
-                    .foregroundStyle(Color.textPrimary)
-                Text(overview.trendSummaryDescription)
-                    .font(Constants.Typography.body)
-                    .foregroundStyle(Color.textSecondary)
-            }
+            MonthlyTrendChart(
+                points: viewModel.trendPoints,
+                summaryText: trendSummary
+            )
         }
     }
 
@@ -170,137 +68,57 @@ private extension HomeView {
             }
         }
     }
-}
 
-// MARK: - Helpers
-
-private extension HomeView {
-    var heroGradientBackground: some View {
-        LinearGradient(
-            colors: heroGradientColors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
+    var trendIcon: String {
+        viewModel.summary.monthlyChangeRatio >= 0 ? "arrow.up.right.circle.fill" : "arrow.down.right.circle.fill"
     }
 
-    var quickActionColumns: [GridItem] {
-        [
-            GridItem(.flexible(), spacing: Constants.Spacing.md),
-            GridItem(.flexible(), spacing: Constants.Spacing.md)
-        ]
+    var trendDescription: String {
+        let percentFormatter = NumberFormatter()
+        percentFormatter.numberStyle = .percent
+        percentFormatter.maximumFractionDigits = 1
+        percentFormatter.minimumFractionDigits = 0
+        percentFormatter.locale = Locale(identifier: "zh_TW")
+        let percentText = percentFormatter.string(from: NSNumber(value: viewModel.summary.monthlyChangeRatio)) ?? "0%"
+        let amountText = NumberFormatter.formattedCurrencyString(for: viewModel.summary.monthlyChangeAmount)
+        let direction = viewModel.summary.monthlyChangeRatio >= 0 ? "本月上升" : "本月下降"
+        return "\(direction) \(percentText)（\(amountText)）"
     }
 
-    var heroGradientColors: [Color] {
-        switch colorScheme {
-        case .dark:
-            return [
-                Color(red: 0.12, green: 0.36, blue: 0.33),
-                Color(red: 0.10, green: 0.28, blue: 0.46)
-            ]
-        default:
-            return [
-                Color.primaryMint,
-                Color.secondarySky
-            ]
+    var trendSubtitle: String {
+        viewModel.summary.monthlyChangeRatio >= 0 ? "保持穩健表現，繼續朝目標邁進。" : "建議檢視近期支出，調整儲蓄策略。"
+    }
+
+    var trendSummary: String {
+        guard let latest = viewModel.trendPoints.last else {
+            return "目前尚未取得資產趨勢資訊。"
         }
-    }
-}
-
-// MARK: - Models
-
-private struct HomeOverview {
-    struct Highlight: Identifiable {
-        let id = UUID()
-        let title: String
-        let value: String
-    }
-
-    let totalAssets: Double
-    let monthlyChangeRatio: Double
-    let monthlyChangeAmount: Double
-    let lastUpdated: Date
-    let highlights: [Highlight]
-
-    var totalAssetsText: String {
-        NumberFormatter.formattedCurrencyString(for: Decimal(totalAssets))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy 年 M 月"
+        let latestText = formatter.string(from: latest.date)
+        return "已根據最近 \(viewModel.trendPoints.count) 筆紀錄計算趨勢，最新資料為 \(latestText)。"
     }
 
     var lastUpdatedText: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "zh_TW")
         formatter.dateFormat = "更新於 MMM d 日 HH:mm"
-        return formatter.string(from: lastUpdated)
+        return formatter.string(from: viewModel.summary.lastUpdated)
     }
-
-    var trendIcon: String {
-        monthlyChangeRatio >= 0 ? "arrow.up.right.circle.fill" : "arrow.down.right.circle.fill"
-    }
-
-    var trendDescription: String {
-        let percentageFormatter = NumberFormatter()
-        percentageFormatter.numberStyle = .percent
-        percentageFormatter.maximumFractionDigits = 1
-        percentageFormatter.minimumFractionDigits = 0
-        percentageFormatter.locale = Locale(identifier: "zh_TW")
-        let percentText = percentageFormatter.string(from: NSNumber(value: monthlyChangeRatio)) ?? "0%"
-        let amountText = NumberFormatter.formattedCurrencyString(for: Decimal(monthlyChangeAmount))
-        let direction = monthlyChangeRatio >= 0 ? "本月上升" : "本月下降"
-        return "\(direction) \(percentText)（\(amountText)）"
-    }
-
-    var trendSubheadline: String {
-        monthlyChangeRatio >= 0 ? "保持穩健表現，繼續朝目標邁進。" : "建議檢視近期支出，調整儲蓄策略。"
-    }
-
-    var trendSummaryDescription: String {
-        let baseline = monthlyChangeRatio >= 0 ? "資產維持正向成長，" : "資產呈現下滑趨勢，"
-        return baseline + "此趨勢圖表以假資料展示近六個月的變化，正式整合服務之前可用於檢查視覺設計與響應式排版。"
-    }
-
-    static let sample: HomeOverview = {
-        HomeOverview(
-            totalAssets: 1_284_500,
-            monthlyChangeRatio: 0.052,
-            monthlyChangeAmount: 63_500,
-            lastUpdated: Date(),
-            highlights: [
-                Highlight(title: "帳戶總數", value: "5 個"),
-                Highlight(title: "進行中目標", value: "3 項"),
-                Highlight(title: "本月儲蓄", value: NumberFormatter.formattedCurrencyString(for: Decimal(25_800)))
-            ]
-        )
-    }()
 }
 
-private struct MonthlyTrendPoint: Identifiable {
-    let id = UUID()
-    let date: Date
-    let amount: Decimal
+// MARK: - Helpers
 
-    var amountDouble: Double {
-        NSDecimalNumber(decimal: amount).doubleValue
-    }
-
-    static func sampleSixMonths(referenceDate: Date = Date()) -> [MonthlyTrendPoint] {
-        let calendar = Calendar(identifier: .gregorian)
-        let baseAmounts: [Decimal] = [
-            1_120_000,
-            1_165_000,
-            1_190_000,
-            1_235_000,
-            1_260_000,
-            1_284_500
+private extension HomeView {
+    var quickActionColumns: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: Constants.Spacing.md),
+            GridItem(.flexible(), spacing: Constants.Spacing.md)
         ]
-
-        return baseAmounts.enumerated().compactMap { index, amount in
-            guard let date = calendar.date(byAdding: .month, value: index - (baseAmounts.count - 1), to: referenceDate) else {
-                return nil
-            }
-            return MonthlyTrendPoint(date: date, amount: amount)
-        }
-        .sorted { $0.date < $1.date }
     }
 }
+
+// MARK: - Models
 
 private struct HomeQuickAction: Identifiable {
     enum Style {
@@ -432,7 +250,6 @@ private struct QuickActionCard: View {
     private var shadowColor: Color {
         colorScheme == .dark ? Color.clear : Color.black.opacity(0.08)
     }
-
 }
 
 #Preview {

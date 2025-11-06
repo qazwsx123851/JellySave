@@ -41,7 +41,8 @@ JellySave/
 │       ├── NotificationService.swift # 本地通知服務
 │       ├── ThemeService.swift      # 主題切換服務
 │       ├── BiometricAuthService.swift # 生物識別認證
-│       └── KeychainService.swift   # 安全資料儲存
+│       ├── KeychainService.swift   # 安全資料儲存
+│       └── DataManagementService.swift # 資料匯出/匯入/清除
 ├── Features/
 │   ├── Home/
 │   │   ├── Views/
