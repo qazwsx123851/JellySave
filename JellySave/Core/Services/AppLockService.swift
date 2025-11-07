@@ -112,8 +112,14 @@ final class AppLockService: ObservableObject {
     }
 
     func setPasscode(newValue: String, currentPasscode: String? = nil) throws {
-        if hasPasscode(), let currentPasscode, !verify(passcode: currentPasscode) {
-            throw AppLockError.invalidCurrentPasscode
+        if hasPasscode() {
+            guard let currentPasscode, !currentPasscode.isEmpty else {
+                throw AppLockError.invalidCurrentPasscode
+            }
+
+            guard verify(passcode: currentPasscode) else {
+                throw AppLockError.invalidCurrentPasscode
+            }
         }
         try keychain.save(Data(newValue.utf8), for: passcodeKey)
     }
