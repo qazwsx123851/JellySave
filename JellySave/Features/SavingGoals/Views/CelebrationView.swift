@@ -1,3 +1,4 @@
+import AudioToolbox
 import SwiftUI
 import UIKit
 
@@ -7,6 +8,7 @@ struct CelebrationView: View {
     var message: String = "持續儲蓄，下一個里程碑就在不遠處。"
     var onDismiss: () -> Void = {}
     @State private var hasTriggeredFeedback = false
+    private let celebrationSoundID: SystemSoundID = 1105
 
     var body: some View {
         VStack(spacing: Constants.Spacing.xl) {
@@ -71,6 +73,7 @@ private extension CelebrationView {
 
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+        AudioServicesPlaySystemSound(celebrationSoundID)
     }
 
     var animationAvailable: Bool {

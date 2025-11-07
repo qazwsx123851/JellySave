@@ -33,11 +33,18 @@ struct CountingLabel: View {
     var value: Double
     var style: CountingLabelStyle
     var animation: Animation = .easeOut(duration: 0.8)
+    var font: Font = Constants.Typography.hero
+    var foregroundColor: Color = ThemeColor.primary.color
 
     @State private var animatedValue: Double = 0
 
     var body: some View {
-        AnimatableCountingText(value: animatedValue, style: style)
+        AnimatableCountingText(
+            value: animatedValue,
+            style: style,
+            font: font,
+            foregroundColor: foregroundColor
+        )
             .onAppear {
                 animatedValue = value
             }
@@ -53,6 +60,8 @@ struct CountingLabel: View {
 private struct AnimatableCountingText: View, Animatable {
     var value: Double
     var style: CountingLabelStyle
+    var font: Font
+    var foregroundColor: Color
 
     var animatableData: Double {
         get { value }
@@ -61,8 +70,8 @@ private struct AnimatableCountingText: View, Animatable {
 
     var body: some View {
         Text(style.formattedValue(from: value))
-            .font(Constants.Typography.hero)
-            .foregroundStyle(ThemeColor.primary.color)
+            .font(font)
+            .foregroundStyle(foregroundColor)
     }
 }
 

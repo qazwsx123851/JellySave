@@ -14,7 +14,8 @@ struct SavingGoalsView: View {
                     onCreateGoal: { isPresentingCreateGoal = true },
                     onMarkCompleted: { goal in
                         viewModel.markCompleted(goal)
-                    }
+                    },
+                    isLoading: viewModel.isLoading
                 )
                 .environmentObject(viewModel)
                 .padding(.horizontal, Constants.Spacing.md)

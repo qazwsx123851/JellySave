@@ -14,11 +14,18 @@ final class SettingsViewModel: ObservableObject {
     @Published var successMessage: String?
     @Published var exportedFileURL: URL?
     @Published var selectedTheme: AppTheme
+    @Published var appLockEnabled = false
+    @Published var useBiometricUnlock = false
+    @Published var autoLockSelection: AppLockInterval = .oneMinute
+    @Published var supportsBiometricUnlock = false
+    @Published var isPresentingPasscodeSheet = false
 
     private let notificationService: NotificationServiceProtocol
     private let dataManagementService: DataManagementServiceProtocol
     private weak var themeService: ThemeService?
+    private weak var appLockService: AppLockService?
     private var cancellables = Set<AnyCancellable>()
+    private var pendingEnableAfterPasscode = false
 
     init(notificationService: NotificationServiceProtocol = NotificationService(),
          dataManagementService: DataManagementServiceProtocol = DataManagementService(),
@@ -163,5 +170,99 @@ final class SettingsViewModel: ObservableObject {
     func updateThemeService(_ themeService: ThemeService) {
         self.themeService = themeService
         selectedTheme = themeService.currentTheme
+    }
+
+    func updateAppLockService(_ service: AppLockService) {
+        appLockService = service
+        supportsBiometricUnlock = service.supportsBiometrics
+        appLockEnabled = service.configuration.isEnabled
+        useBiometricUnlock = service.configuration.useBiometrics
+        autoLockSelection = AppLockInterval(duration: service.configuration.autoLockInterval)
+
+        service.$configuration
+            .receive(on: RunLoop.main)
+            .sink { [weak self] config in
+                guard let self else { return }
+                self.appLockEnabled = config.isEnabled
+                self.useBiometricUnlock = config.useBiometrics
+                self.autoLockSelection = AppLockInterval(duration: config.autoLockInterval)
+            }
+            .store(in: &cancellables)
+    }
+
+    var passcodeExists: Bool {
+        appLockService?.hasPasscode() ?? false
+    }
+
+    func handleAppLockToggle(_ isEnabled: Bool) {
+        guard let service = appLockService else { return }
+        if isEnabled {
+            guard passcodeExists else {
+                pendingEnableAfterPasscode = true
+                isPresentingPasscodeSheet = true
+                return
+            }
+            do {
+                try service.enableLock(autoLock: autoLockSelection.duration, useBiometrics: useBiometricUnlock)
+                appLockEnabled = true
+            } catch {
+                appLockEnabled = false
+                errorMessage = error.localizedDescription
+            }
+        } else {
+            service.disableLock()
+            appLockEnabled = false
+        }
+    }
+
+    func handleBiometricToggle(_ isEnabled: Bool) {
+        useBiometricUnlock = isEnabled
+        appLockService?.updateBiometricPreference(enabled: isEnabled)
+    }
+
+    func updateAutoLockSelection(_ interval: AppLockInterval) {
+        autoLockSelection = interval
+        if appLockEnabled {
+            appLockService?.updateAutoLock(interval: interval)
+        }
+    }
+
+    func presentPasscodeSetup() {
+        isPresentingPasscodeSheet = true
+    }
+
+    func submitPasscode(current: String?, new: String, confirm: String) -> String? {
+        if passcodeExists {
+            guard let current, !current.isEmpty else {
+                return "請輸入目前使用中的密碼。"
+            }
+        }
+
+        guard !new.isEmpty, new.count >= 4, new.count <= 6, new.allSatisfy(\.isNumber) else {
+            return "請輸入 4-6 位數字密碼。"
+        }
+
+        guard new == confirm else {
+            return "兩次輸入的密碼不一致。"
+        }
+
+        do {
+            try appLockService?.setPasscode(newValue: new, currentPasscode: passcodeExists ? current : nil)
+            isPresentingPasscodeSheet = false
+            if pendingEnableAfterPasscode {
+                pendingEnableAfterPasscode = false
+                handleAppLockToggle(true)
+            }
+            return nil
+        } catch {
+            return error.localizedDescription
+        }
+    }
+
+    func cancelPasscodeSetup() {
+        if pendingEnableAfterPasscode {
+            pendingEnableAfterPasscode = false
+            appLockEnabled = false
+        }
     }
 }

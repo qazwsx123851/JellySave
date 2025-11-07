@@ -40,6 +40,7 @@ private extension HomeView {
             trendDescription: trendDescription,
             trendSubtitle: trendSubtitle
         )
+        .skeletonOverlay(isActive: viewModel.isLoading, cornerRadius: Constants.CornerRadius.large)
     }
 
     var monthlyTrendSection: some View {
@@ -53,6 +54,7 @@ private extension HomeView {
                 summaryText: trendSummary
             )
         }
+        .skeletonOverlay(isActive: viewModel.isLoading, cornerRadius: Constants.CornerRadius.large)
     }
 
     var quickActionsSection: some View {
@@ -67,6 +69,7 @@ private extension HomeView {
                 }
             }
         }
+        .skeletonOverlay(isActive: viewModel.isLoading, cornerRadius: Constants.CornerRadius.large)
     }
 
     var trendIcon: String {

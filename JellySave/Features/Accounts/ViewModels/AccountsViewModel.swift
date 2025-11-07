@@ -29,10 +29,16 @@ final class AccountsViewModel: ObservableObject {
     @Published var summary: AccountOverviewSummary = .placeholder
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var searchText: String = "" {
+        didSet {
+            updateSections()
+        }
+    }
 
     private let accountService: AccountServiceProtocol
     private let coreDataStack: CoreDataStack
     private var cancellables = Set<AnyCancellable>()
+    private var allAccounts: [Account] = []
 
     init(accountService: AccountServiceProtocol = AccountService(), coreDataStack: CoreDataStack = .shared) {
         self.accountService = accountService
@@ -61,8 +67,9 @@ final class AccountsViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] accounts in
                 guard let self else { return }
-                self.sections = self.makeSections(from: accounts)
+                self.allAccounts = accounts
                 self.summary = self.makeSummary(from: accounts)
+                self.updateSections()
             }
             .store(in: &cancellables)
     }
@@ -103,6 +110,21 @@ final class AccountsViewModel: ObservableObject {
         return AccountType.allCases.compactMap { type in
             guard let accounts = grouped[type], !accounts.isEmpty else { return nil }
             return AccountSection(type: type, accounts: accounts)
+        }
+    }
+
+    private func updateSections() {
+        let filtered = filteredAccounts(from: allAccounts)
+        sections = makeSections(from: filtered)
+    }
+
+    private func filteredAccounts(from accounts: [Account]) -> [Account] {
+        let keyword = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !keyword.isEmpty else { return accounts }
+
+        return accounts.filter { account in
+            account.name.localizedCaseInsensitiveContains(keyword) ||
+            (account.notes?.localizedCaseInsensitiveContains(keyword) ?? false)
         }
     }
 
