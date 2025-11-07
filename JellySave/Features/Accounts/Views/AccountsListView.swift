@@ -4,17 +4,27 @@ struct AccountsListView: View {
     let summary: AccountOverviewSummary
     let sections: [AccountSection]
     let quickActions: [AccountQuickAction]
+    let isLoading: Bool
     let onCreateAccount: () -> Void
 
     var body: some View {
         LazyVStack(spacing: Constants.Spacing.xl) {
             totalBalanceCard
+                .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.large)
 
-            ForEach(sections) { section in
-                AccountSectionView(section: section)
+            if isLoading && sections.isEmpty {
+                ForEach(0..<2, id: \.self) { _ in
+                    SkeletonCardPlaceholder(height: 150)
+                }
+            } else {
+                ForEach(sections) { section in
+                    AccountSectionView(section: section)
+                        .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.large)
+                }
             }
 
             AccountQuickActions(actions: quickActions)
+                .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.large)
 
             CustomButton(title: "新增帳戶", icon: Image(systemName: "plus.circle.fill")) {
                 onCreateAccount()
@@ -29,16 +39,19 @@ struct AccountsListView: View {
             icon: Image(systemName: "creditcard.fill"),
             actionTitle: "查看報表",
             action: {}
-        ) {
-            VStack(alignment: .leading, spacing: Constants.Spacing.lg) {
-                VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
-                    Text(NumberFormatter.formattedCurrencyString(for: summary.totalBalance))
-                        .font(Constants.Typography.hero)
-                        .foregroundStyle(Color.textPrimary)
-                    Text(changeDescription)
-                        .font(Constants.Typography.body)
-                        .foregroundStyle(summary.monthlyChangeRatio >= 0 ? ThemeColor.success.color : ThemeColor.accent.color)
-                }
+                ) {
+                    VStack(alignment: .leading, spacing: Constants.Spacing.lg) {
+                        VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
+                            CountingLabel(
+                                value: summary.totalBalance.doubleValue,
+                                style: .currency,
+                                font: Constants.Typography.hero,
+                                foregroundColor: Color.textPrimary
+                            )
+                            Text(changeDescription)
+                                .font(Constants.Typography.body)
+                                .foregroundStyle(summary.monthlyChangeRatio >= 0 ? ThemeColor.success.color : ThemeColor.accent.color)
+                        }
 
                 Divider()
 

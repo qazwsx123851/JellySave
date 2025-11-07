@@ -16,3 +16,9 @@ extension NumberFormatter {
         return twdCurrency.string(from: number) ?? number.stringValue
     }
 }
+
+extension Decimal {
+    var doubleValue: Double {
+        NSDecimalNumber(decimal: self).doubleValue
+    }
+}

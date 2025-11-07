@@ -3,6 +3,7 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @EnvironmentObject private var themeService: ThemeService
+    @EnvironmentObject private var appLockService: AppLockService
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showShareSheet = false
     @State private var isImportingBackup = false
@@ -23,6 +24,7 @@ struct SettingsView: View {
                 .maxWidthLayout()
                 .onAppear {
                     viewModel.updateThemeService(themeService)
+                    viewModel.updateAppLockService(appLockService)
                 }
             }
             .background(Color.appBackground.ignoresSafeArea())
@@ -37,6 +39,16 @@ struct SettingsView: View {
                 Text("匯出檔案不存在")
                     .padding()
             }
+        }
+        .sheet(isPresented: $viewModel.isPresentingPasscodeSheet, onDismiss: {
+            viewModel.cancelPasscodeSetup()
+        }) {
+            PasscodeSetupSheet(
+                requiresCurrentPasscode: viewModel.passcodeExists,
+                onSubmit: { current, new, confirm in
+                    viewModel.submitPasscode(current: current, new: new, confirm: confirm)
+                }
+            )
         }
         .fileImporter(isPresented: $isImportingBackup, allowedContentTypes: [.json]) { result in
             switch result {
@@ -117,31 +129,68 @@ private extension SettingsView {
 
     var securitySection: some View {
         SettingsCard(title: "安全與隱私", icon: "lock.shield.fill", accent: ThemeColor.success.color) {
-            Toggle(isOn: .constant(true)) {
+            Toggle(isOn: Binding(
+                get: { viewModel.appLockEnabled },
+                set: { viewModel.handleAppLockToggle($0) }
+            )) {
                 VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
-                    Text("啟用 Face ID")
+                    Text("啟用 App 鎖定")
                         .font(Constants.Typography.body.weight(.semibold))
-                    Text("提升應用程式解鎖安全性")
+                    Text("離開應用後需透過密碼或 Face ID 解鎖")
                         .font(Constants.Typography.caption)
                         .foregroundStyle(Color.textSecondary)
                 }
             }
             .toggleStyle(SwitchToggleStyle(tint: ThemeColor.success.color))
-            .disabled(true)
-            .opacity(0.6)
 
-            Divider()
+            if viewModel.appLockEnabled {
+                Divider()
 
-            VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
-                Text("自動鎖定")
-                    .font(Constants.Typography.body.weight(.semibold))
-                Stepper(value: .constant(30), in: 15...120, step: 15) {
-                    Text("閒置 30 秒後鎖定")
-                        .font(Constants.Typography.body)
-                        .foregroundStyle(Color.textSecondary)
+                VStack(alignment: .leading, spacing: Constants.Spacing.md) {
+                    if viewModel.supportsBiometricUnlock {
+                        Toggle(isOn: Binding(
+                            get: { viewModel.useBiometricUnlock },
+                            set: { viewModel.handleBiometricToggle($0) }
+                        )) {
+                            VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
+                                Text("使用 Face ID / Touch ID")
+                                    .font(Constants.Typography.body.weight(.semibold))
+                                Text("快速驗證後自動解鎖")
+                                    .font(Constants.Typography.caption)
+                                    .foregroundStyle(Color.textSecondary)
+                            }
+                        }
+                        .toggleStyle(SwitchToggleStyle(tint: ThemeColor.success.color))
+                    } else {
+                        Text("此裝置不支援 Face ID/Touch ID。")
+                            .font(Constants.Typography.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
+                        Text("自動鎖定時間")
+                            .font(Constants.Typography.body.weight(.semibold))
+                        Picker("自動鎖定", selection: Binding(
+                            get: { viewModel.autoLockSelection },
+                            set: { viewModel.updateAutoLockSelection($0) }
+                        )) {
+                            ForEach(AppLockInterval.allCases) { interval in
+                                Text(interval.title).tag(interval)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        Text("背景離開超過指定時間後，系統會自動上鎖。")
+                            .font(Constants.Typography.caption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
                 }
-                .disabled(true)
-                .opacity(0.6)
+            }
+
+            CustomButton(
+                title: viewModel.passcodeExists ? "變更解鎖密碼" : "設定解鎖密碼",
+                style: .outline
+            ) {
+                viewModel.presentPasscodeSetup()
             }
         }
     }
@@ -377,7 +426,67 @@ private struct SupportLink: View {
     }
 }
 
+private struct PasscodeSetupSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    var requiresCurrentPasscode: Bool
+    var onSubmit: (_ current: String?, _ new: String, _ confirm: String) -> String?
+
+    @State private var currentPasscode: String = ""
+    @State private var newPasscode: String = ""
+    @State private var confirmPasscode: String = ""
+    @State private var errorMessage: String?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                if requiresCurrentPasscode {
+                    SecureField("目前密碼", text: $currentPasscode)
+                        .keyboardType(.numberPad)
+                        .textContentType(.password)
+                }
+
+                SecureField("新密碼（4-6 位數）", text: $newPasscode)
+                    .keyboardType(.numberPad)
+                    .textContentType(.newPassword)
+
+                SecureField("再次輸入新密碼", text: $confirmPasscode)
+                    .keyboardType(.numberPad)
+                    .textContentType(.newPassword)
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(Constants.Typography.caption)
+                        .foregroundStyle(Color.accentCoral)
+                }
+            }
+            .navigationTitle("設定解鎖密碼")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("取消") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("儲存") {
+                        handleSave()
+                    }
+                }
+            }
+        }
+    }
+
+    private func handleSave() {
+        let error = onSubmit(requiresCurrentPasscode ? currentPasscode : nil, newPasscode, confirmPasscode)
+        if let error {
+            errorMessage = error
+        } else {
+            dismiss()
+        }
+    }
+}
+
 #Preview {
     SettingsView()
         .environmentObject(ThemeService())
+        .environmentObject(AppLockService())
 }

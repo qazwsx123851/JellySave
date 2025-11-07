@@ -5,11 +5,13 @@ struct GoalsListView: View {
     let completedGoals: [SavingGoal]
     let onCreateGoal: () -> Void
     let onMarkCompleted: (SavingGoal) -> Void
+    let isLoading: Bool
     @EnvironmentObject private var goalsViewModel: GoalsViewModel
 
     var body: some View {
         LazyVStack(spacing: Constants.Spacing.xl) {
             overviewCard
+                .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.large)
             activeGoalsSection
             completedGoalsSection
             CustomButton(title: "新增儲蓄目標", icon: Image(systemName: "target")) {
@@ -35,9 +37,12 @@ struct GoalsListView: View {
                     }
 
                     VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
-                        Text(totalSavedText)
-                            .font(Constants.Typography.subtitle.weight(.semibold))
-                            .foregroundStyle(Color.textPrimary)
+                        CountingLabel(
+                            value: totalSavedAmount.doubleValue,
+                            style: .currency,
+                            font: Constants.Typography.subtitle.weight(.semibold),
+                            foregroundColor: Color.textPrimary
+                        )
                         Text("已完成 \(completedGoals.count)/\(totalGoals) 個目標")
                             .font(Constants.Typography.body)
                             .foregroundStyle(Color.textSecondary)
@@ -55,9 +60,27 @@ struct GoalsListView: View {
                 Divider()
 
                 HStack(spacing: Constants.Spacing.lg) {
-                    summaryHighlight(title: "本月儲蓄", value: monthlySavingText)
-                    summaryHighlight(title: "平均完成率", value: averageProgressText)
-                    summaryHighlight(title: "進行中", value: "\(activeGoals.count) 個")
+                    summaryHighlight(title: "本月儲蓄") {
+                        CountingLabel(
+                            value: monthlySavingAmount.doubleValue,
+                            style: .currency,
+                            font: Constants.Typography.body.weight(.semibold),
+                            foregroundColor: Color.textPrimary
+                        )
+                    }
+                    summaryHighlight(title: "平均完成率") {
+                        CountingLabel(
+                            value: overallProgress,
+                            style: .percentage(maximumFractionDigits: 0),
+                            font: Constants.Typography.body.weight(.semibold),
+                            foregroundColor: Color.textPrimary
+                        )
+                    }
+                    summaryHighlight(title: "進行中") {
+                        Text("\(activeGoals.count) 個")
+                            .font(Constants.Typography.body.weight(.semibold))
+                            .foregroundStyle(Color.textPrimary)
+                    }
                 }
             }
         }
@@ -68,7 +91,11 @@ struct GoalsListView: View {
             Text("進行中的目標")
                 .sectionTitleStyle()
 
-            if activeGoals.isEmpty {
+            if isLoading && activeGoals.isEmpty {
+                ForEach(0..<2, id: \.self) { _ in
+                    SkeletonCardPlaceholder(height: 190)
+                }
+            } else if activeGoals.isEmpty {
                 EmptyStateView(
                     title: "還沒有正在努力的目標",
                     message: "設定一個新的儲蓄目標，讓 JellySave 幫你追蹤進度。"
@@ -81,6 +108,7 @@ struct GoalsListView: View {
                                 .environmentObject(goalsViewModel)
                         } label: {
                             GoalCard(goal: goal)
+                                .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.large)
                         }
                         .buttonStyle(.plain)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -106,7 +134,9 @@ struct GoalsListView: View {
                 TagLabel(text: "近 6 個月", style: .outline)
             }
 
-            if completedGoals.isEmpty {
+            if isLoading && completedGoals.isEmpty {
+                SkeletonCardPlaceholder(height: 140)
+            } else if completedGoals.isEmpty {
                 EmptyStateView(
                     title: "尚未完成任何目標",
                     message: "堅持儲蓄計畫，完成後會在這裡幫你紀錄。"
@@ -119,6 +149,7 @@ struct GoalsListView: View {
                                 .environmentObject(goalsViewModel)
                         } label: {
                             GoalCompletedCard(goal: goal)
+                                .skeletonOverlay(isActive: isLoading, cornerRadius: Constants.CornerRadius.medium)
                         }
                         .buttonStyle(.plain)
                     }
@@ -138,31 +169,20 @@ struct GoalsListView: View {
         return total / Double(goals.count)
     }
 
-    private var totalSavedText: String {
-        let amount = (activeGoals + completedGoals).reduce(Decimal(0)) { $0 + $1.currentAmountDecimal }
-        return NumberFormatter.formattedCurrencyString(for: amount)
+    private var totalSavedAmount: Decimal {
+        (activeGoals + completedGoals).reduce(Decimal(0)) { $0 + $1.currentAmountDecimal }
     }
 
-    private var monthlySavingText: String {
-        let amount = activeGoals.reduce(Decimal(0)) { $0 + $1.monthlySavingRequired() }
-        return NumberFormatter.formattedCurrencyString(for: amount)
+    private var monthlySavingAmount: Decimal {
+        activeGoals.reduce(Decimal(0)) { $0 + $1.monthlySavingRequired() }
     }
 
-    private var averageProgressText: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.maximumFractionDigits = 0
-        return formatter.string(from: NSNumber(value: overallProgress)) ?? "0%"
-    }
-
-    private func summaryHighlight(title: String, value: String) -> some View {
+    private func summaryHighlight<Content: View>(title: String, @ViewBuilder value: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
             Text(title)
                 .font(Constants.Typography.caption)
                 .foregroundStyle(Color.textSecondary)
-            Text(value)
-                .font(Constants.Typography.body.weight(.semibold))
-                .foregroundStyle(Color.textPrimary)
+            value()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -194,9 +214,12 @@ private struct GoalCard: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: Constants.Spacing.xs) {
-                    Text(NumberFormatter.formattedCurrencyString(for: goal.currentAmountDecimal))
-                        .font(Constants.Typography.subtitle.weight(.semibold))
-                        .foregroundStyle(Color.textPrimary)
+                    CountingLabel(
+                        value: goal.currentAmountDecimal.doubleValue,
+                        style: .currency,
+                        font: Constants.Typography.subtitle.weight(.semibold),
+                        foregroundColor: Color.textPrimary
+                    )
                     Text("目標 \(NumberFormatter.formattedCurrencyString(for: goal.targetAmountDecimal))")
                         .font(Constants.Typography.caption)
                         .foregroundStyle(Color.textSecondary)

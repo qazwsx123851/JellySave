@@ -27,9 +27,12 @@ struct TotalAssetsCard: View {
                     .foregroundStyle(Color.white.opacity(0.72))
             }
 
-            Text(NumberFormatter.formattedCurrencyString(for: summary.totalAssets))
-                .font(Constants.Typography.hero)
-                .foregroundStyle(Color.white)
+            CountingLabel(
+                value: summary.totalAssets.doubleValue,
+                style: .currency,
+                font: Constants.Typography.hero,
+                foregroundColor: .white
+            )
 
             VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
                 HStack(spacing: Constants.Spacing.xs) {

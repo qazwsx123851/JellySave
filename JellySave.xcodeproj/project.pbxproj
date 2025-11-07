@@ -31,7 +31,10 @@
 		1C6A3F0B29E9AA0600D4E5E2 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2B29E9AA0600D4E5E2 /* View+Extensions.swift */; };
 		1C6A3F0C29E9AA0600D4E5E2 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2C29E9AA0600D4E5E2 /* LottieView.swift */; };
 		1C6A3F0D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift */; };
+		5ACD42752F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */; };
 		1C6A3F0E29E9AA0600D4E5E2 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */; };
+		67D1E6B22F2F0D9C0006FB7C /* AppLockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */; };
+		04BF8F6A2F2F08E500C959C9 /* AppLockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8F692F2F08E500C959C9 /* AppLockService.swift */; };
 		4AB2F6F89F4C4C52AFCC78C1C7CF426C /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0C21D307E9453BB7D196183D51EAB2 /* AddAccountView.swift */; };
 		4D12282A193E49FD8B381857FD514487 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5641F024EC14593AF522B030430AA79 /* ShareSheet.swift */; };
 		4D678B0C2EBC58AA004A18AD /* goalCelebration.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D678B092EBC58A1004A18AD /* goalCelebration.json */; };
@@ -89,7 +92,10 @@
 		1C6A3F2B29E9AA0600D4E5E2 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		1C6A3F2C29E9AA0600D4E5E2 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		1C6A3F2D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonLoadingView.swift; sourceTree = "<group>"; };
+		5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCardPlaceholder.swift; sourceTree = "<group>"; };
+		67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockOverlayView.swift; sourceTree = "<group>"; };
 		1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
+		04BF8F692F2F08E500C959C9 /* AppLockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockService.swift; sourceTree = "<group>"; };
 		1C6A3F3829E9AA0600D4E5E2 /* DesignSystem.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DesignSystem.md; sourceTree = "<group>"; };
 		1C6A3F3929E9AA0600D4E5E2 /* Animations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Animations.md; sourceTree = "<group>"; };
 		1DB1A10065E2449093928769CFB21E18 /* TotalAssetsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalAssetsCard.swift; sourceTree = "<group>"; };
@@ -178,6 +184,7 @@
 		1C6A3E9429E9AA0300D4E5E2 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				04BF8F692F2F08E500C959C9 /* AppLockService.swift */,
 				2AF61E3B4F094389A3473FD1940600D6 /* BiometricAuthService.swift */,
 				61F27D4ACE594A5A81AD30D6CF903346 /* KeychainService.swift */,
 				84483826903C4CC39AB2C800 /* AccountService.swift */,
@@ -332,8 +339,17 @@
 				1C6A3F3429E9AA0600D4E5E2 /* Animations */,
 				1C6A3F3529E9AA0600D4E5E2 /* Loading */,
 				1C6A3F3629E9AA0600D4E5E2 /* Misc */,
+				67D1E6B02F2F0D890006FB7C /* Security */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		67D1E6B02F2F0D890006FB7C /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */,
+			);
+			path = Security;
 			sourceTree = "<group>";
 		};
 		1C6A3EA429E9AA0300D4E5E2 /* Extensions */ = {
@@ -432,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				1C6A3F2D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift */,
+				5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
@@ -579,6 +596,7 @@
 				FE46982AF57D48F182637A9A /* NotificationService.swift in Sources */,
 				7EEC386805BF41F8BCF793B113CAC400 /* BiometricAuthService.swift in Sources */,
 				022163AE04F74A40ADD532C98CBB222A /* KeychainService.swift in Sources */,
+				04BF8F6A2F2F08E500C959C9 /* AppLockService.swift in Sources */,
 				90C59A0498884863AFF662AD /* SavingGoalService.swift in Sources */,
 				AF4E11EA40E24990BAE6169A /* AccountService.swift in Sources */,
 				A399B1F275AC46A4BDB615AE /* AccountType.swift in Sources */,
@@ -591,6 +609,8 @@
 				143734D90A314F9A8F7E2C8B /* MainTabView.swift in Sources */,
 				1C6A3F0E29E9AA0600D4E5E2 /* CountingLabel.swift in Sources */,
 				1C6A3F0D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift in Sources */,
+				5ACD42752F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift in Sources */,
+				67D1E6B22F2F0D9C0006FB7C /* AppLockOverlayView.swift in Sources */,
 				1C6A3F0C29E9AA0600D4E5E2 /* LottieView.swift in Sources */,
 				1C6A3F0B29E9AA0600D4E5E2 /* View+Extensions.swift in Sources */,
 				1C6A3F0A29E9AA0600D4E5E2 /* GradientBackground.swift in Sources */,
