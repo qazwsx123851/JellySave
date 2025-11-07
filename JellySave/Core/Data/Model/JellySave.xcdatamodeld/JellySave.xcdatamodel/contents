@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE model SYSTEM "com.apple.IDECoreDataModeler.DataModel.dtd">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1" lastSavedToolsVersion="20021" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="manual/none">
+        <attribute name="balance" optional="NO" attributeType="DecimalAttributeType" defaultValueString="0" usesScalarValueType="NO" precision="38" scale="6"/>
+        <attribute name="createdAt" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="currency" optional="NO" attributeType="String" defaultValueString="TWD"/>
+        <attribute name="id" optional="NO" attributeType="UUIDAttributeType"/>
+        <attribute name="isActive" optional="NO" attributeType="BooleanAttributeType" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="NO" attributeType="String"/>
+        <attribute name="updatedAt" optional="NO" attributeType="DateAttributeType"/>
+        <relationship name="snapshots" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AssetSnapshot" inverseName="account" inverseEntity="AssetSnapshot"/>
+    </entity>
+    <entity name="AssetSnapshot" representedClassName="AssetSnapshot" syncable="YES" codeGenerationType="manual/none">
+        <attribute name="createdAt" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="date" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="id" optional="NO" attributeType="UUIDAttributeType"/>
+        <attribute name="totalAssets" optional="NO" attributeType="DecimalAttributeType" defaultValueString="0" usesScalarValueType="NO" precision="38" scale="6"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="snapshots" inverseEntity="Account"/>
+    </entity>
+    <entity name="NotificationSettings" representedClassName="NotificationSettings" syncable="YES" codeGenerationType="manual/none">
+        <attribute name="id" optional="NO" attributeType="UUIDAttributeType"/>
+        <attribute name="isEnabled" optional="NO" attributeType="BooleanAttributeType" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="notificationTime" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="quoteType" optional="NO" attributeType="String" defaultValueString="saving"/>
+        <attribute name="updatedAt" optional="NO" attributeType="DateAttributeType"/>
+    </entity>
+    <entity name="SavingGoal" representedClassName="SavingGoal" syncable="YES" codeGenerationType="manual/none">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="completedAt" optional="YES" attributeType="DateAttributeType"/>
+        <attribute name="createdAt" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="currentAmount" optional="NO" attributeType="DecimalAttributeType" defaultValueString="0" usesScalarValueType="NO" precision="38" scale="6"/>
+        <attribute name="deadline" optional="NO" attributeType="DateAttributeType"/>
+        <attribute name="id" optional="NO" attributeType="UUIDAttributeType"/>
+        <attribute name="isCompleted" optional="NO" attributeType="BooleanAttributeType" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="targetAmount" optional="NO" attributeType="DecimalAttributeType" defaultValueString="0" usesScalarValueType="NO" precision="38" scale="6"/>
+        <attribute name="title" optional="NO" attributeType="String"/>
+        <attribute name="updatedAt" optional="NO" attributeType="DateAttributeType"/>
+    </entity>
+    <elements>
+        <element name="Account" positionX="-63" positionY="-9" width="128" height="225"/>
+        <element name="AssetSnapshot" positionX="213" positionY="-108" width="128" height="149"/>
+        <element name="NotificationSettings" positionX="413" positionY="40" width="128" height="165"/>
+        <element name="SavingGoal" positionX="27" positionY="198" width="160" height="237"/>
+    </elements>
+</model>

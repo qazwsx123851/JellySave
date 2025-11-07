@@ -93,7 +93,7 @@
     - 優化動畫效能和流暢度
     - _需求: 需求 1, 10, 12_
 
-- [ ] 5. 建立靜態 UI 頁面
+- [x] 5. 建立靜態 UI 頁面
   - [x] 5.1 實作首頁靜態 UI
     - 建立 HomeView 基本結構和導航
     - 實作總資產卡片的靜態版本（使用假資料）
@@ -129,95 +129,95 @@
     - 建立深層導航的靜態結構
     - _需求: 需求 9, 10_
 
-- [ ] 6. 設定 Core Data 資料模型
-  - [ ] 6.1 創建 Core Data 模型檔案
+- [x] 6. 設定 Core Data 資料模型
+  - [x] 6.1 創建 Core Data 模型檔案
     - 建立 JellySave.xcdatamodeld 檔案
     - 定義 Account、SavingGoal、AssetSnapshot、NotificationSettings 實體
     - 設定實體屬性和關聯關係
     - 配置資料驗證規則
     - _需求: 需求 2, 3, 5_
 
-  - [ ] 6.2 實作 Core Data Stack
+  - [x] 6.2 實作 Core Data Stack
     - 建立 CoreDataStack.swift 類別
     - 實作 NSPersistentContainer 配置
     - 設定自動合併變更和錯誤處理
     - 提供統一的 context 存取介面
     - _需求: 需求 5, 9_
 
-  - [ ] 6.3 創建資料模型類別
+  - [x] 6.3 創建資料模型類別
     - 實作 AccountType 枚舉和相關方法
     - 為 Account 實體添加計算屬性和便利方法
     - 為 SavingGoal 實體添加進度計算邏輯
     - 實作資料驗證和格式化方法
     - _需求: 需求 2, 3_
 
-- [ ] 7. 建立服務層架構
-  - [ ] 7.1 實作 AccountService
+- [x] 7. 建立服務層架構
+  - [x] 7.1 實作 AccountService
     - 建立 AccountServiceProtocol 協議
     - 實作 AccountService 類別的 CRUD 操作
     - 使用 Combine 發布者處理非同步操作
     - 實作總資產計算邏輯
     - _需求: 需求 1, 2_
 
-  - [ ] 7.2 實作 SavingGoalService
+  - [x] 7.2 實作 SavingGoalService
     - 建立 SavingGoalServiceProtocol 協議
     - 實作儲蓄目標的建立、更新、完成邏輯
     - 實作每月所需儲蓄金額計算
     - 處理目標達成檢測和通知
     - _需求: 需求 3_
 
-  - [ ] 7.3 實作 NotificationService
+  - [x] 7.3 實作 NotificationService
     - 建立 NotificationServiceProtocol 協議
     - 實作通知權限請求邏輯
     - 實作每日通知排程功能
     - 從激勵名言庫隨機選擇通知內容
     - _需求: 需求 4_
 
-- [ ] 8. 實作動態功能和資料綁定
-  - [ ] 8.1 建立 HomeViewModel 和動態功能
+- [x] 8. 實作動態功能和資料綁定
+  - [x] 8.1 建立 HomeViewModel 和動態功能
     - 實作首頁業務邏輯和狀態管理
     - 整合 AccountService 獲取總資產資料
     - 將靜態 UI 升級為動態版本（資料綁定）
     - 實作資料重新整理和錯誤處理邏輯
     - _需求: 需求 1, 9_
 
-  - [ ] 8.2 建立 AccountsViewModel 和動態功能
+  - [x] 8.2 建立 AccountsViewModel 和動態功能
     - 實作帳戶列表的業務邏輯和狀態管理
     - 整合 AccountService 進行 CRUD 操作
     - 將靜態帳戶 UI 升級為動態版本
     - 實作帳戶分組、排序和搜尋邏輯
     - _需求: 需求 2, 7_
 
-  - [ ] 8.3 建立 GoalsViewModel 和動態功能
+  - [x] 8.3 建立 GoalsViewModel 和動態功能
     - 實作儲蓄目標的業務邏輯和狀態管理
     - 整合 SavingGoalService 進行目標操作
     - 將靜態目標 UI 升級為動態版本
     - 實作目標進度計算和更新邏輯
     - _需求: 需求 3, 7_
 
-  - [ ] 8.4 建立 SettingsViewModel 和動態功能
+  - [x] 8.4 建立 SettingsViewModel 和動態功能
     - 實作設定頁面的業務邏輯和狀態管理
     - 整合 ThemeService 和 NotificationService
     - 將靜態設定 UI 升級為動態版本
     - 實作設定變更的即時套用邏輯
     - _需求: 需求 11, 4_
 
-- [ ] 9. 實作進階功能
-  - [ ] 9.1 實作慶祝動畫功能
+- [x] 9. 實作進階功能
+  - [x] 9.1 實作慶祝動畫功能
     - 建立 CelebrationView 組件
     - 整合 Lottie 慶祝動畫效果
     - 實作目標達成觸發邏輯
     - 添加音效和震動回饋
     - _需求: 需求 3, 12_
 
-  - [ ] 9.2 實作激勵名言系統
+  - [x] 9.2 實作激勵名言系統
     - 創建 InspirationalQuotes 資料結構
     - 準備投資建議和儲蓄激勵名言
     - 實作名言分類和隨機選擇邏輯
     - 整合通知排程和名言選擇
     - _需求: 需求 4_
 
-  - [ ] 9.3 實作資料管理功能
+  - [x] 9.3 實作資料管理功能
     - 建立資料匯出功能
     - 實作資料匯入和還原功能
     - 添加資料清除確認對話框
