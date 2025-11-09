@@ -44,6 +44,8 @@ final class HomeViewModel: ObservableObject {
     private let accountService: AccountServiceProtocol
     private let savingGoalService: SavingGoalServiceProtocol
     private let coreDataStack: CoreDataStack
+    private let errorHandler = ErrorHandler.shared
+    private let performanceMonitor = PerformanceMonitor.shared
     private var cancellables = Set<AnyCancellable>()
 
     init(accountService: AccountServiceProtocol = AccountService(),
@@ -72,7 +74,7 @@ final class HomeViewModel: ObservableObject {
                 guard let self else { return }
                 self.isLoading = false
                 if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = self.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] accounts, goals in
                 guard let self else { return }
@@ -125,7 +127,9 @@ final class HomeViewModel: ObservableObject {
         let context = coreDataStack.context
         var snapshots: [AssetSnapshot] = []
         context.performAndWait {
-            snapshots = (try? context.fetch(request)) ?? []
+            snapshots = (try? self.performanceMonitor.measure(operation: "HomeViewModel.trendFetch") {
+                try context.fetch(request)
+            }) ?? []
         }
 
         if snapshots.isEmpty {

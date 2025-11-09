@@ -18,6 +18,7 @@ protocol SavingGoalServiceProtocol {
 
 final class SavingGoalService: SavingGoalServiceProtocol {
     private let coreDataStack: CoreDataStack
+    private let performanceMonitor = PerformanceMonitor.shared
 
     init(coreDataStack: CoreDataStack = .shared) {
         self.coreDataStack = coreDataStack
@@ -30,7 +31,9 @@ final class SavingGoalService: SavingGoalServiceProtocol {
                 NSSortDescriptor(keyPath: \SavingGoal.isCompleted, ascending: true),
                 NSSortDescriptor(keyPath: \SavingGoal.deadline, ascending: true)
             ]
-            return try context.fetch(request)
+            return try self.performanceMonitor.measure(operation: "SavingGoalService.fetchGoals") {
+                try context.fetch(request)
+            }
         }
     }
 
