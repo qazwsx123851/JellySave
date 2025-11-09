@@ -28,6 +28,7 @@ final class GoalsViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let savingGoalService: SavingGoalServiceProtocol
+    private let errorHandler = ErrorHandler.shared
     private var cancellables = Set<AnyCancellable>()
 
     init(savingGoalService: SavingGoalServiceProtocol = SavingGoalService()) {
@@ -52,7 +53,7 @@ final class GoalsViewModel: ObservableObject {
                 guard let self else { return }
                 self.isLoading = false
                 if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = self.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] goals in
                 guard let self else { return }
@@ -74,7 +75,7 @@ final class GoalsViewModel: ObservableObject {
         .receive(on: DispatchQueue.main)
         .sink { [weak self] completion in
             if case .failure(let error) = completion {
-                self?.errorMessage = error.localizedDescription
+                self?.errorMessage = self?.errorHandler.handle(error)
             }
         } receiveValue: { [weak self] _ in
             self?.load()
@@ -87,7 +88,7 @@ final class GoalsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] _ in
                 self?.load()
@@ -100,7 +101,7 @@ final class GoalsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] _ in
                 self?.celebrationContext = GoalCelebrationContext(goal: goal)

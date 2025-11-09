@@ -37,6 +37,7 @@ final class AccountsViewModel: ObservableObject {
 
     private let accountService: AccountServiceProtocol
     private let coreDataStack: CoreDataStack
+    private let errorHandler = ErrorHandler.shared
     private var cancellables = Set<AnyCancellable>()
     private var allAccounts: [Account] = []
 
@@ -63,7 +64,7 @@ final class AccountsViewModel: ObservableObject {
                 guard let self else { return }
                 self.isLoading = false
                 if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = self.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] accounts in
                 guard let self else { return }
@@ -79,7 +80,7 @@ final class AccountsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] in
                 self?.load()
@@ -92,7 +93,7 @@ final class AccountsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] _ in
                 self?.load()

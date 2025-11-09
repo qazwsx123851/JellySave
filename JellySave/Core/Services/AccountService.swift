@@ -12,6 +12,7 @@ protocol AccountServiceProtocol {
 
 final class AccountService: AccountServiceProtocol {
     private let coreDataStack: CoreDataStack
+    private let performanceMonitor = PerformanceMonitor.shared
 
     init(coreDataStack: CoreDataStack = .shared) {
         self.coreDataStack = coreDataStack
@@ -23,7 +24,9 @@ final class AccountService: AccountServiceProtocol {
             request.sortDescriptors = [
                 NSSortDescriptor(keyPath: \Account.createdAt, ascending: false)
             ]
-            return try context.fetch(request)
+            return try self.performanceMonitor.measure(operation: "AccountService.fetchAccounts") {
+                try context.fetch(request)
+            }
         }
     }
 
@@ -70,7 +73,9 @@ final class AccountService: AccountServiceProtocol {
             balanceExpression.expressionResultType = .decimalAttributeType
             request.propertiesToFetch = [balanceExpression]
 
-            let result = try context.fetch(request)
+            let result = try self.performanceMonitor.measure(operation: "AccountService.totalAssets") {
+                try context.fetch(request)
+            }
             if let dict = result.first, let sum = dict["totalBalance"] as? NSDecimalNumber {
                 return sum as Decimal
             }
@@ -95,4 +100,3 @@ final class AccountService: AccountServiceProtocol {
         .eraseToAnyPublisher()
     }
 }
-

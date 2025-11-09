@@ -23,6 +23,7 @@ final class SettingsViewModel: ObservableObject {
     private let notificationService: NotificationServiceProtocol
     private let dataManagementService: DataManagementServiceProtocol
     private weak var themeService: ThemeService?
+    private let errorHandler = ErrorHandler.shared
     private weak var appLockService: AppLockService?
     private var cancellables = Set<AnyCancellable>()
     private var pendingEnableAfterPasscode = false
@@ -42,7 +43,7 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] settings in
                 guard let self else { return }
@@ -59,7 +60,7 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { [weak self] granted in
                 self?.permissionGranted = granted
@@ -89,7 +90,7 @@ final class SettingsViewModel: ObservableObject {
                 guard let self else { return }
                 self.isSaving = false
                 if case .failure(let error) = completion {
-                    self.errorMessage = error.localizedDescription
+                    self.errorMessage = self.errorHandler.handle(error)
                 } else {
                     self.latestQuotePreview = self.notificationService.randomQuote(for: self.selectedCategory)
                 }
@@ -116,7 +117,7 @@ final class SettingsViewModel: ObservableObject {
             exportedFileURL = url
             successMessage = "匯出完成，可分享備份檔案。"
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = errorHandler.handle(error)
         }
 
         isProcessingBackup = false
@@ -131,7 +132,7 @@ final class SettingsViewModel: ObservableObject {
             try await dataManagementService.importData(from: url)
             successMessage = "資料已成功還原。"
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = errorHandler.handle(error)
         }
 
         isProcessingBackup = false
@@ -146,7 +147,7 @@ final class SettingsViewModel: ObservableObject {
             try await dataManagementService.clearData()
             successMessage = "所有本機資料已清除。"
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = errorHandler.handle(error)
         }
 
         isProcessingBackup = false
@@ -161,7 +162,7 @@ final class SettingsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.errorMessage = error.localizedDescription
+                    self?.errorMessage = self?.errorHandler.handle(error)
                 }
             } receiveValue: { _ in }
             .store(in: &cancellables)
@@ -207,7 +208,7 @@ final class SettingsViewModel: ObservableObject {
                 appLockEnabled = true
             } catch {
                 appLockEnabled = false
-                errorMessage = error.localizedDescription
+                errorMessage = errorHandler.handle(error)
             }
         } else {
             service.disableLock()
@@ -255,7 +256,7 @@ final class SettingsViewModel: ObservableObject {
             }
             return nil
         } catch {
-            return error.localizedDescription
+            return errorHandler.handle(error)
         }
     }
 
