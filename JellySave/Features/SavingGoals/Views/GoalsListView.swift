@@ -266,21 +266,38 @@ private struct GoalCard: View {
                 .fill(Color.surfacePrimary)
         )
         .cardShadow()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(goalAccessibilityLabel))
+        .accessibilityValue(Text(goalAccessibilityValue))
+        .accessibilityHint(Text("點擊檢視或更新目標進度"))
+    }
+
+    private var goalAccessibilityLabel: String {
+        let progressPercent = Int(goal.progress * 100)
+        let remainingAmount = NumberFormatter.formattedCurrencyString(for: goal.remainingAmount)
+        return "\(goal.title)，完成 \(progressPercent)% ，尚需 \(remainingAmount)"
+    }
+
+    private var goalAccessibilityValue: String {
+        let currentText = NumberFormatter.formattedCurrencyString(for: goal.currentAmountDecimal)
+        let targetText = NumberFormatter.formattedCurrencyString(for: goal.targetAmountDecimal)
+        return "目前 \(currentText)，目標 \(targetText)，\(goal.deadlineText)"
     }
 }
 
 private struct GoalCompletedCard: View {
     let goal: SavingGoal
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         HStack(spacing: Constants.Spacing.md) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 28, weight: .semibold))
-                .foregroundStyle(ThemeColor.success.color)
+                .foregroundStyle(iconForegroundColor)
                 .frame(width: 48, height: 48)
                 .background(
                     RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                        .fill(ThemeColor.success.color.opacity(0.15))
+                        .fill(iconBackgroundColor)
                 )
 
             VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
@@ -303,6 +320,18 @@ private struct GoalCompletedCard: View {
             RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
                 .fill(Color.surfaceSecondary)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(goal.title)，已完成，目標 \(NumberFormatter.formattedCurrencyString(for: goal.targetAmountDecimal))"))
+        .accessibilityValue(Text(goal.completionText))
+        .accessibilityHint(Text("點擊查看完成紀錄"))
+    }
+
+    private var iconBackgroundColor: Color {
+        ThemeColor.success.color.opacity(0.15).adjustedForHighContrast(colorSchemeContrast)
+    }
+
+    private var iconForegroundColor: Color {
+        iconBackgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
     }
 }
 

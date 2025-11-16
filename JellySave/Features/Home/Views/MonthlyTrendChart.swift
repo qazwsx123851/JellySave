@@ -59,7 +59,10 @@ struct MonthlyTrendChart: View {
                 }
             }
             .frame(height: 240)
-            .accessibilityElement(children: .contain)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(Text("6 個月資產趨勢"))
+            .accessibilityValue(Text(summaryText))
+            .accessibilityHint(Text("根據最近的資產紀錄計算"))
 
             Divider()
 

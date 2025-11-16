@@ -16,11 +16,13 @@ struct CelebrationView: View {
                 LottieView(name: animationName, loopMode: .loop)
                     .frame(height: 200)
                     .padding(.horizontal, Constants.Spacing.lg)
+                    .accessibilityHidden(true)
             } else {
                 Image(systemName: "sparkles")
                     .font(.system(size: 72, weight: .semibold))
                     .foregroundStyle(ThemeColor.primary.color)
                     .frame(height: 180)
+                    .accessibilityHidden(true)
             }
 
             VStack(spacing: Constants.Spacing.md) {
@@ -58,6 +60,8 @@ struct CelebrationView: View {
         )
         .padding()
         .onAppear(perform: triggerFeedback)
+        .accessibilityElement(children: .contain)
+        .accessibilityHint(Text("目標達成提示，點擊繼續努力關閉"))
     }
 }
 

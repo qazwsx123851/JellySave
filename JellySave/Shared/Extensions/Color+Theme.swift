@@ -58,3 +58,62 @@ extension UIColor {
     static let textSecondary = UIColor(named: "TextSecondary") ?? UIColor.secondaryLabel
     static let divider = UIColor(named: "Divider") ?? UIColor.separator
 }
+
+// MARK: - Accessibility Helpers
+
+extension Color {
+    /// Calculates the WCAG relative luminance for the current color.
+    private func relativeLuminance() -> CGFloat {
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        guard uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
+            return 0
+        }
+
+        func convert(_ value: CGFloat) -> CGFloat {
+            value <= 0.03928 ? value / 12.92 : pow((value + 0.055) / 1.055, 2.4)
+        }
+
+        return 0.2126 * convert(red) + 0.7152 * convert(green) + 0.0722 * convert(blue)
+    }
+
+    /// Returns either black or white depending on which offers better contrast against the color.
+    func accessibleTextColor(contrast: ColorSchemeContrast) -> Color {
+        let luminance = relativeLuminance()
+        let whiteContrast = (1.0 + 0.05) / (luminance + 0.05)
+        let blackContrast = (luminance + 0.05) / 0.05
+
+        if contrast == .increased {
+            return blackContrast >= whiteContrast ? .black : .white
+        }
+
+        return whiteContrast >= blackContrast ? .white : .black
+    }
+
+    /// Slightly darkens bright colors when the user requests increased contrast.
+    func adjustedForHighContrast(_ contrast: ColorSchemeContrast) -> Color {
+        guard contrast == .increased else { return self }
+
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        guard uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
+            return self
+        }
+
+        let luminance = relativeLuminance()
+        let factor: CGFloat = luminance > 0.45 ? 0.65 : 0.85
+
+        return Color(
+            red: Double(min(max(red * factor, 0), 1)),
+            green: Double(min(max(green * factor, 0), 1)),
+            blue: Double(min(max(blue * factor, 0), 1)),
+            opacity: Double(alpha)
+        )
+    }
+}

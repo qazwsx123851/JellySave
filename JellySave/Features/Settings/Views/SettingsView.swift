@@ -353,15 +353,16 @@ private struct DataManagementRow: View {
     let subtitle: String
     let icon: String
     var iconColor: Color = ThemeColor.accent.color
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         HStack(spacing: Constants.Spacing.md) {
             ZStack {
                 RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                    .fill(iconColor.opacity(0.18))
+                    .fill(iconBackgroundColor)
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(iconColor)
+                    .foregroundStyle(iconForegroundColor)
             }
             .frame(width: 48, height: 48)
 
@@ -385,6 +386,14 @@ private struct DataManagementRow: View {
             RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
                 .fill(Color.surfaceSecondary)
         )
+    }
+
+    private var iconBackgroundColor: Color {
+        iconColor.opacity(0.18).adjustedForHighContrast(colorSchemeContrast)
+    }
+
+    private var iconForegroundColor: Color {
+        iconBackgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
     }
 }
 

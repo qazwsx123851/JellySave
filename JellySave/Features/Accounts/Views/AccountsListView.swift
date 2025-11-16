@@ -140,17 +140,18 @@ private struct AccountSectionView: View {
 private struct AccountRow: View {
     let account: Account
     let accentColor: Color
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.sm) {
             HStack(spacing: Constants.Spacing.md) {
                 Image(systemName: account.typeEnum.iconName)
                     .font(.system(size: 28, weight: .semibold))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(iconForegroundColor)
                     .frame(width: 48, height: 48)
                     .background(
                         RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
-                            .fill(accentColor.opacity(0.9))
+                            .fill(iconBackgroundColor)
                     )
 
                 VStack(alignment: .leading, spacing: Constants.Spacing.xxs) {
@@ -174,11 +175,24 @@ private struct AccountRow: View {
             RoundedRectangle(cornerRadius: Constants.CornerRadius.medium, style: .continuous)
                 .fill(Color.surfaceSecondary)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(account.name)，\(account.typeEnum.rawValue)帳戶，餘額 \(account.formattedBalance)"))
+        .accessibilityValue(Text(account.notes ?? "沒有備註"))
+        .accessibilityHint(Text("點擊查看帳戶詳情"))
+    }
+
+    private var iconBackgroundColor: Color {
+        accentColor.opacity(0.9).adjustedForHighContrast(colorSchemeContrast)
+    }
+
+    private var iconForegroundColor: Color {
+        iconBackgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
     }
 }
 
 private struct AccountQuickActions: View {
     let actions: [AccountQuickAction]
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         CardContainer(
@@ -191,10 +205,10 @@ private struct AccountQuickActions: View {
                     HStack(spacing: Constants.Spacing.md) {
                         ZStack {
                             RoundedRectangle(cornerRadius: Constants.CornerRadius.small, style: .continuous)
-                                .fill(action.color.opacity(0.18))
+                                .fill(iconBackground(for: action))
                             Image(systemName: action.icon)
                                 .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(action.color)
+                                .foregroundStyle(iconForeground(for: action))
                         }
                         .frame(width: 44, height: 44)
 
@@ -221,5 +235,13 @@ private struct AccountQuickActions: View {
                 }
             }
         }
+    }
+
+    private func iconBackground(for action: AccountQuickAction) -> Color {
+        action.color.opacity(0.18).adjustedForHighContrast(colorSchemeContrast)
+    }
+
+    private func iconForeground(for action: AccountQuickAction) -> Color {
+        iconBackground(for: action).accessibleTextColor(contrast: colorSchemeContrast)
     }
 }

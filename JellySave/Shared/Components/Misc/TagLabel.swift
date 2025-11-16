@@ -8,23 +8,23 @@ struct TagLabel: View {
 
     let text: String
     var style: Style = .primary
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     private var backgroundColor: Color {
         switch style {
         case .primary:
-            return ThemeColor.primary.color.opacity(0.15)
+            return ThemeColor.primary.color.opacity(0.15).adjustedForHighContrast(colorSchemeContrast)
         case .outline:
-            return ThemeColor.secondary.color.opacity(0.12)
+            return ThemeColor.secondary.color.opacity(0.12).adjustedForHighContrast(colorSchemeContrast)
         }
     }
 
     private var foregroundColor: Color {
-        switch style {
-        case .primary:
-            return ThemeColor.primary.color
-        case .outline:
-            return ThemeColor.secondary.color
-        }
+        backgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
+    }
+
+    private var borderColor: Color {
+        ThemeColor.secondary.color.adjustedForHighContrast(colorSchemeContrast)
     }
 
     var body: some View {
@@ -38,7 +38,7 @@ struct TagLabel: View {
             )
             .overlay(
                 Capsule()
-                    .stroke(foregroundColor.opacity(style == .outline ? 0.6 : 0), lineWidth: 1)
+                    .stroke(borderColor.opacity(style == .outline ? 0.8 : 0), lineWidth: 1)
             )
             .foregroundStyle(foregroundColor)
             .accessibilityLabel(Text(text))
