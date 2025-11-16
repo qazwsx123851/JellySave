@@ -33,6 +33,11 @@
 		1C6A3F0D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2D29E9AA0600D4E5E2 /* SkeletonLoadingView.swift */; };
 		5ACD42752F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */; };
 		1C6A3F0E29E9AA0600D4E5E2 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */; };
+		F910FBA2F9BC4A2188DAE753C89AF5BE /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E0D3FEB39D41E48C43022CE4932E1D /* ErrorHandler.swift */; };
+		4BE09AE9C7B4448BBDB592EAFD0AFC8D /* PerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9462AD8CE46040819C7A9E5CC6439E0E /* PerformanceMonitor.swift */; };
+		27449E088E3F4A67B5C20B0FC3460D86 /* AppLockServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4081C47C9734C66A3B2F19B09B88C4B /* AppLockServiceTests.swift */; };
+		1C562C918B6347DA8E7A7375A390B9C2 /* ErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BF70088BA84649B6D609F0E5F97963 /* ErrorHandlerTests.swift */; };
+		DDC34DFBC3AC48E39694D4A4689BFB1E /* JellySaveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A4AB55FD14F67AC7BEEE145DA29DE /* JellySaveUITests.swift */; };
 		67D1E6B22F2F0D9C0006FB7C /* AppLockOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */; };
 		04BF8F6A2F2F08E500C959C9 /* AppLockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF8F692F2F08E500C959C9 /* AppLockService.swift */; };
 		4AB2F6F89F4C4C52AFCC78C1C7CF426C /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0C21D307E9453BB7D196183D51EAB2 /* AddAccountView.swift */; };
@@ -67,6 +72,23 @@
 		FE46982AF57D48F182637A9A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CC8F525D2942388F79E766 /* NotificationService.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E7242872F3994AFCB190B16A5614D017 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1C6A3EB029E9AA0400D4E5E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1C6A3E5B29E9AA0000D4E5E2;
+			remoteInfo = JellySave;
+		};
+		E7242872F3994AFCB190B16A5614D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1C6A3EB029E9AA0400D4E5E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1C6A3E5B29E9AA0000D4E5E2;
+			remoteInfo = JellySave;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		05BDE3A0ADB44919AEB86296 /* DataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModels.swift; sourceTree = "<group>"; };
 		15B04B452D964393A320A2DB /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -95,7 +117,16 @@
 		5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCardPlaceholder.swift; sourceTree = "<group>"; };
 		67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockOverlayView.swift; sourceTree = "<group>"; };
 		1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
+		D3E0D3FEB39D41E48C43022CE4932E1D /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		E893990F943140FD881B9A17772A37E4 /* JellySaveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellySaveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D255EEE65394831A8B83F6FFAD4CE24 /* JellySaveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellySaveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4081C47C9734C66A3B2F19B09B88C4B /* AppLockServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockServiceTests.swift; sourceTree = "<group>"; };
+		E9BF70088BA84649B6D609F0E5F97963 /* ErrorHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlerTests.swift; sourceTree = "<group>"; };
+		BD1A4AB55FD14F67AC7BEEE145DA29DE /* JellySaveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JellySaveUITests.swift; sourceTree = "<group>"; };
+		4B946E5798084CF89E3A5BA2FD32134B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		836587C49B764E689AB7B352A8B5ECDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04BF8F692F2F08E500C959C9 /* AppLockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockService.swift; sourceTree = "<group>"; };
+		9462AD8CE46040819C7A9E5CC6439E0E /* PerformanceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceMonitor.swift; sourceTree = "<group>"; };
 		1C6A3F3829E9AA0600D4E5E2 /* DesignSystem.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DesignSystem.md; sourceTree = "<group>"; };
 		1C6A3F3929E9AA0600D4E5E2 /* Animations.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Animations.md; sourceTree = "<group>"; };
 		1DB1A10065E2449093928769CFB21E18 /* TotalAssetsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalAssetsCard.swift; sourceTree = "<group>"; };
@@ -138,6 +169,20 @@
 				4D9FB41A2EB8A9A4003821A3 /* Lottie in Frameworks */,
 				4D9FB41F2EB8A9DA003821A3 /* SkeletonView in Frameworks */,
 				4D9FB4222EB8AB37003821A3 /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66253593B5234DE1828AD73769CE904E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AACB79E2E824F6DACEB69F6F030C9C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				04BF8F692F2F08E500C959C9 /* AppLockService.swift */,
+				9462AD8CE46040819C7A9E5CC6439E0E /* PerformanceMonitor.swift */,
 				2AF61E3B4F094389A3473FD1940600D6 /* BiometricAuthService.swift */,
 				61F27D4ACE594A5A81AD30D6CF903346 /* KeychainService.swift */,
 				84483826903C4CC39AB2C800 /* AccountService.swift */,
@@ -366,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				1C6A3E8429E9AA0200D4E5E2 /* JellySaveError.swift */,
+				D3E0D3FEB39D41E48C43022CE4932E1D /* ErrorHandler.swift */,
 				1C6A3F2129E9AA0600D4E5E2 /* Constants.swift */,
 				A14E9788110C4A5893D3D6074B420489 /* InspirationalQuotes.swift */,
 				86AA5C863C0147C3B12F62145E5BD739 /* Notifications.swift */,
@@ -386,6 +433,8 @@
 			isa = PBXGroup;
 			children = (
 				1C6A3E8729E9AA0200D4E5E2 /* JellySave.app */,
+				E893990F943140FD881B9A17772A37E4 /* JellySaveTests.xctest */,
+				7D255EEE65394831A8B83F6FFAD4CE24 /* JellySaveUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -399,8 +448,29 @@
 				1C6A3EA229E9AA0300D4E5E2 /* Shared */,
 				1C6A3F3729E9AA0600D4E5E2 /* docs */,
 				1C6A3EA629E9AA0300D4E5E2 /* Resources */,
+				5800AF9ADE564FF08CCD588B6DD1074D /* JellySaveTests */,
+				4D8CB2AE686541DB9E851FD67B83C57F /* JellySaveUITests */,
 			);
 			path = JellySave;
+			sourceTree = "<group>";
+		};
+		5800AF9ADE564FF08CCD588B6DD1074D /* JellySaveTests */ = {
+			isa = PBXGroup;
+			children = (
+				4B946E5798084CF89E3A5BA2FD32134B /* Info.plist */,
+				E4081C47C9734C66A3B2F19B09B88C4B /* AppLockServiceTests.swift */,
+				E9BF70088BA84649B6D609F0E5F97963 /* ErrorHandlerTests.swift */,
+			);
+			path = JellySaveTests;
+			sourceTree = "<group>";
+		};
+		4D8CB2AE686541DB9E851FD67B83C57F /* JellySaveUITests */ = {
+			isa = PBXGroup;
+			children = (
+				836587C49B764E689AB7B352A8B5ECDB /* Info.plist */,
+				BD1A4AB55FD14F67AC7BEEE145DA29DE /* JellySaveUITests.swift */,
+			);
+			path = JellySaveUITests;
 			sourceTree = "<group>";
 		};
 		1C6A3F3029E9AA0600D4E5E2 /* Buttons */ = {
@@ -535,6 +605,42 @@
 			productReference = 1C6A3E8729E9AA0200D4E5E2 /* JellySave.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8562019B356A41C28B8B6CDB87E97B1C /* JellySaveTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7242872F3994AFCB190B16A5614D01B /* Build configuration list for PBXNativeTarget "JellySaveTests" */;
+			buildPhases = (
+				AAC5F5B9C6074D78B3A14C2343BAEBF1 /* Sources */,
+				66253593B5234DE1828AD73769CE904E /* Frameworks */,
+				6178BCA18C454B4090186C6A57C8A9CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7242872F3994AFCB190B16A5614D019 /* PBXTargetDependency */,
+			);
+			name = JellySaveTests;
+			productName = JellySaveTests;
+			productReference = E893990F943140FD881B9A17772A37E4 /* JellySaveTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7648CB1310544CDE87492EDB1BFA5D4E /* JellySaveUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7242872F3994AFCB190B16A5614D01C /* Build configuration list for PBXNativeTarget "JellySaveUITests" */;
+			buildPhases = (
+				9A75CAF4324E4703B7E3415A4852A745 /* Sources */,
+				9AACB79E2E824F6DACEB69F6F030C9C8 /* Frameworks */,
+				23A5C2C31EBF4C87BAC5FF6A54B548C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E7242872F3994AFCB190B16A5614D01A /* PBXTargetDependency */,
+			);
+			name = JellySaveUITests;
+			productName = JellySaveUITests;
+			productReference = 7D255EEE65394831A8B83F6FFAD4CE24 /* JellySaveUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -547,6 +653,14 @@
 				TargetAttributes = {
 					1C6A3E5B29E9AA0000D4E5E2 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					8562019B356A41C28B8B6CDB87E97B1C = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 1C6A3E5B29E9AA0000D4E5E2;
+					};
+					7648CB1310544CDE87492EDB1BFA5D4E = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 1C6A3E5B29E9AA0000D4E5E2;
 					};
 				};
 			};
@@ -568,6 +682,8 @@
 			projectRoot = "";
 			targets = (
 				1C6A3E5B29E9AA0000D4E5E2 /* JellySave */,
+				8562019B356A41C28B8B6CDB87E97B1C /* JellySaveTests */,
+				7648CB1310544CDE87492EDB1BFA5D4E /* JellySaveUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -579,6 +695,20 @@
 			files = (
 				4D678B0C2EBC58AA004A18AD /* goalCelebration.json in Resources */,
 				1C6A3E7529E9AA0100D4E5E2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6178BCA18C454B4090186C6A57C8A9CA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23A5C2C31EBF4C87BAC5FF6A54B548C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +759,7 @@
 				87C6FACCBAE64443B81780B502318755 /* TotalAssetsCard.swift in Sources */,
 				1838EA2FBBDD4345B9ABFBEE90DD85A5 /* MonthlyTrendChart.swift in Sources */,
 				1C6A3E7229E9AA0100D4E5E2 /* HomeView.swift in Sources */,
+				F910FBA2F9BC4A2188DAE753C89AF5BE /* ErrorHandler.swift in Sources */,
 				672928F4AA854D8CAA201DE509E238EA /* AccountsListView.swift in Sources */,
 				4AB2F6F89F4C4C52AFCC78C1C7CF426C /* AddAccountView.swift in Sources */,
 				EE651719DE0D48D5B837181E5F5446EB /* AccountDetailView.swift in Sources */,
@@ -638,6 +769,7 @@
 				C35934B850854BB09EF230BA660FC1C6 /* GoalDetailView.swift in Sources */,
 				C514CFFB489C47AC81EC2669E3654835 /* CelebrationView.swift in Sources */,
 				B32D227610674DFA9573E3B2 /* SavingGoalsView.swift in Sources */,
+				4BE09AE9C7B4448BBDB592EAFD0AFC8D /* PerformanceMonitor.swift in Sources */,
 				67AEE6D2DB6C436ABAE1C2939267C0B6 /* NotificationSettingsView.swift in Sources */,
 				CE181B6F447C47EFAB9A3CBD /* SettingsView.swift in Sources */,
 				1C6A3E7129E9AA0100D4E5E2 /* AppDelegate.swift in Sources */,
@@ -645,7 +777,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AAC5F5B9C6074D78B3A14C2343BAEBF1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27449E088E3F4A67B5C20B0FC3460D86 /* AppLockServiceTests.swift in Sources */,
+				1C562C918B6347DA8E7A7375A390B9C2 /* ErrorHandlerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A75CAF4324E4703B7E3415A4852A745 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDC34DFBC3AC48E39694D4A4689BFB1E /* JellySaveUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E7242872F3994AFCB190B16A5614D019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1C6A3E5B29E9AA0000D4E5E2 /* JellySave */;
+			targetProxy = E7242872F3994AFCB190B16A5614D017 /* PBXContainerItemProxy */;
+		};
+		E7242872F3994AFCB190B16A5614D01A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1C6A3E5B29E9AA0000D4E5E2 /* JellySave */;
+			targetProxy = E7242872F3994AFCB190B16A5614D018 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1C6A3EB229E9AA0400D4E5E2 /* Debug */ = {
@@ -824,6 +986,90 @@
 			};
 			name = Release;
 		};
+		74B04D4BE8054624A2A36EBFE36AAE9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = JellySaveTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jellysave.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JellySave.app/JellySave";
+			};
+			name = Debug;
+		};
+		05F5538C69154C7ABA5DB20FAAC36F6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = JellySaveTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jellysave.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JellySave.app/JellySave";
+			};
+			name = Release;
+		};
+		4219122CD739487BADF512F71FF686E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = JellySaveUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jellysave.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = JellySave;
+			};
+			name = Debug;
+		};
+		85109E125F814827823692534481BB5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = JellySaveUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jellysave.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = JellySave;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -841,6 +1087,24 @@
 			buildConfigurations = (
 				1C6A3EB529E9AA0400D4E5E2 /* Debug */,
 				1C6A3EB629E9AA0400D4E5E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7242872F3994AFCB190B16A5614D01B /* Build configuration list for PBXNativeTarget "JellySaveTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74B04D4BE8054624A2A36EBFE36AAE9E /* Debug */,
+				05F5538C69154C7ABA5DB20FAAC36F6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E7242872F3994AFCB190B16A5614D01C /* Build configuration list for PBXNativeTarget "JellySaveUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4219122CD739487BADF512F71FF686E6 /* Debug */,
+				85109E125F814827823692534481BB5E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

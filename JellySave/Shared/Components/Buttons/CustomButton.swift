@@ -14,12 +14,14 @@ struct CustomButton: View {
     var isDisabled: Bool = false
     var action: () -> Void
 
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
+
     private var foregroundColor: Color {
         switch style {
-        case .primary, .secondary:
-            return .white
         case .outline:
-            return ThemeColor.primary.color
+            return Color.textPrimary
+        case .primary, .secondary:
+            return backgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
         }
     }
 
@@ -31,9 +33,9 @@ struct CustomButton: View {
     private var backgroundColor: Color {
         switch style {
         case .primary:
-            return ThemeColor.primary.color
+            return ThemeColor.primary.color.adjustedForHighContrast(colorSchemeContrast)
         case .secondary:
-            return ThemeColor.accent.color
+            return ThemeColor.accent.color.adjustedForHighContrast(colorSchemeContrast)
         case .outline:
             return Color.clear
         }
@@ -51,7 +53,7 @@ struct CustomButton: View {
         case .secondary:
             return Color.clear
         case .outline:
-            return ThemeColor.primary.color
+            return ThemeColor.primary.color.adjustedForHighContrast(colorSchemeContrast)
         }
     }
 

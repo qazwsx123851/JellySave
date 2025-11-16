@@ -8,6 +8,7 @@ struct TotalAssetsCard: View {
     let trendSubtitle: String
 
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.lg) {
@@ -71,6 +72,7 @@ struct TotalAssetsCard: View {
         .clipShape(RoundedRectangle(cornerRadius: Constants.CornerRadius.large, style: .continuous))
         .cardShadow(.medium)
         .accessibilityElement(children: .contain)
+        .accessibilityHint(Text("包含總資產、月變化與亮點摘要"))
     }
 
     private var heroGradientBackground: some View {
@@ -87,12 +89,12 @@ struct TotalAssetsCard: View {
             return [
                 Color(red: 0.12, green: 0.36, blue: 0.33),
                 Color(red: 0.10, green: 0.28, blue: 0.46)
-            ]
+            ].map { $0.adjustedForHighContrast(colorSchemeContrast) }
         default:
             return [
-                Color.primaryMint,
-                Color.secondarySky
-            ]
+                Color(red: 0.058, green: 0.463, blue: 0.431),
+                Color(red: 0.083, green: 0.396, blue: 0.520)
+            ].map { $0.adjustedForHighContrast(colorSchemeContrast) }
         }
     }
 }

@@ -170,12 +170,13 @@ private struct HomeQuickAction: Identifiable {
 private struct QuickActionCard: View {
     let action: HomeQuickAction
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.md) {
             Image(systemName: action.iconName)
                 .font(.system(size: 24, weight: .semibold))
-                .foregroundStyle(Color.white)
+                .foregroundStyle(iconForegroundColor)
                 .padding(Constants.Spacing.sm)
                 .background(
                     Circle()
@@ -210,14 +211,18 @@ private struct QuickActionCard: View {
     private var iconBackgroundColor: Color {
         switch action.style {
         case .primary:
-            return ThemeColor.primary.color
+            return ThemeColor.primary.color.adjustedForHighContrast(colorSchemeContrast)
         case .secondary:
-            return ThemeColor.secondary.color
+            return ThemeColor.secondary.color.adjustedForHighContrast(colorSchemeContrast)
         case .accent:
-            return ThemeColor.accent.color
+            return ThemeColor.accent.color.adjustedForHighContrast(colorSchemeContrast)
         case .neutral:
             return Color.textPrimary.opacity(0.75)
         }
+    }
+
+    private var iconForegroundColor: Color {
+        iconBackgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
     }
 
     private var cardFillColor: Color {

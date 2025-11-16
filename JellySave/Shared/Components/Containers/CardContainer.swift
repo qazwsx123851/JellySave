@@ -7,6 +7,7 @@ struct CardContainer<Content: View>: View {
     let actionTitle: String?
     let action: (() -> Void)?
     @ViewBuilder let content: Content
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
 
     init(
         title: String? = nil,
@@ -45,10 +46,15 @@ struct CardContainer<Content: View>: View {
     private var header: some View {
         HStack(alignment: .top, spacing: Constants.Spacing.md) {
             if let icon {
-                icon
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(ThemeColor.primary.color)
-                    .accessibilityHidden(true)
+                ZStack {
+                    Circle()
+                        .fill(iconBackgroundColor)
+                    icon
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(iconForegroundColor)
+                        .accessibilityHidden(true)
+                }
+                .frame(width: 36, height: 36)
             }
 
             VStack(alignment: .leading, spacing: Constants.Spacing.xs) {
@@ -72,6 +78,14 @@ struct CardContainer<Content: View>: View {
                     .frame(width: 120)
             }
         }
+    }
+
+    private var iconBackgroundColor: Color {
+        ThemeColor.primary.color.opacity(0.18).adjustedForHighContrast(colorSchemeContrast)
+    }
+
+    private var iconForegroundColor: Color {
+        iconBackgroundColor.accessibleTextColor(contrast: colorSchemeContrast)
     }
 }
 
