@@ -25,6 +25,8 @@ struct CardContainer<Content: View>: View {
         self.content = content()
     }
 
+    @State private var isPressed = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.md) {
             if title != nil || subtitle != nil || icon != nil || action != nil {
@@ -39,6 +41,20 @@ struct CardContainer<Content: View>: View {
                 .fill(Color.surfacePrimary)
         )
         .cardShadow()
+        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
+        .onTapGesture {
+            withAnimation {
+                isPressed = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation {
+                    isPressed = false
+                }
+                // If there is a general action for the card, it could be triggered here
+                // But currently action is specific to the button in the header
+            }
+        }
         .accessibilityElement(children: .contain)
     }
 

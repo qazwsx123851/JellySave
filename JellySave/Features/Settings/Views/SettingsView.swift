@@ -13,6 +13,7 @@ struct SettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: Constants.Spacing.xl) {
+                ScreenHeader(title: "設定")
                     NotificationSettingsView(viewModel: viewModel)
                     themeSection
                     securitySection
@@ -28,7 +29,8 @@ struct SettingsView: View {
                 }
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("設定")
+            // .navigationTitle("設定")
+            .toolbar(.hidden, for: .navigationBar)
         }
         .sheet(isPresented: $showShareSheet, onDismiss: {
             viewModel.resetExportedFileURL()
@@ -464,8 +466,8 @@ private struct PasscodeSetupSheet: View {
 
                 if let errorMessage {
                     Text(errorMessage)
-                        .font(Constants.Typography.caption)
-                        .foregroundStyle(Color.accentCoral)
+                    .font(Constants.Typography.caption)
+                    .foregroundStyle(Color.accentCoral)
                 }
             }
             .navigationTitle("設定解鎖密碼")

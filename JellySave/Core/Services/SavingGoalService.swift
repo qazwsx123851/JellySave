@@ -19,9 +19,11 @@ protocol SavingGoalServiceProtocol {
 final class SavingGoalService: SavingGoalServiceProtocol {
     private let coreDataStack: CoreDataStack
     private let performanceMonitor = PerformanceMonitor.shared
+    private let notificationCenter: NotificationCenter
 
     init(coreDataStack: CoreDataStack = .shared) {
         self.coreDataStack = coreDataStack
+        self.notificationCenter = .default
     }
 
     func fetchGoals() -> AnyPublisher<[SavingGoal], Error> {
@@ -52,6 +54,7 @@ final class SavingGoalService: SavingGoalServiceProtocol {
             goal.isCompleted = false
 
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return goal
         }
     }
@@ -63,6 +66,7 @@ final class SavingGoalService: SavingGoalServiceProtocol {
             goal.updatedAt = Date()
 
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return goal
         }
     }
@@ -73,6 +77,7 @@ final class SavingGoalService: SavingGoalServiceProtocol {
             goal.completedAt = Date()
             goal.updatedAt = Date()
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return goal
         }
     }
@@ -98,6 +103,7 @@ final class SavingGoalService: SavingGoalServiceProtocol {
             goal.updatedAt = Date()
 
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return goal
         }
     }
@@ -117,5 +123,11 @@ final class SavingGoalService: SavingGoalServiceProtocol {
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    private func notifyDataChanged() {
+        DispatchQueue.main.async {
+            self.notificationCenter.post(name: .dataStoreDidChange, object: nil)
+        }
     }
 }

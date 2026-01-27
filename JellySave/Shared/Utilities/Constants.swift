@@ -6,9 +6,9 @@ enum Constants {
         static let xs: CGFloat = 8
         static let sm: CGFloat = 12
         static let md: CGFloat = 16
-        static let lg: CGFloat = 24
-        static let xl: CGFloat = 32
-        static let xxl: CGFloat = 48
+        static let lg: CGFloat = 28 // Increased from 24
+        static let xl: CGFloat = 36 // Increased from 32
+        static let xxl: CGFloat = 56 // Increased from 48
     }
 
     enum CornerRadius {
@@ -37,8 +37,9 @@ enum Constants {
         let x: CGFloat
         let y: CGFloat
 
-        static let subtle = ShadowStyle(color: Color.black.opacity(0.08), radius: 12, x: 0, y: 6)
-        static let medium = ShadowStyle(color: Color.black.opacity(0.12), radius: 16, x: 0, y: 8)
+        static let subtle = ShadowStyle(color: Color.black.opacity(0.06), radius: 10, x: 0, y: 4)
+        static let medium = ShadowStyle(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 10)
+        static let colorful = ShadowStyle(color: ThemeColor.primary.color.opacity(0.25), radius: 20, x: 0, y: 10)
     }
 }
 

@@ -8,22 +8,27 @@ struct SavingGoalsView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                GoalsListView(
-                    activeGoals: viewModel.activeGoals,
-                    completedGoals: viewModel.completedGoals,
-                    onCreateGoal: { isPresentingCreateGoal = true },
-                    onMarkCompleted: { goal in
-                        viewModel.markCompleted(goal)
-                    },
-                    isLoading: viewModel.isLoading
-                )
-                .environmentObject(viewModel)
+                LazyVStack(spacing: Constants.Spacing.xl) {
+                ScreenHeader(title: "儲蓄目標", actionIcon: "plus", onAction: { isPresentingCreateGoal = true })
+                    
+                    GoalsListView(
+                        activeGoals: viewModel.activeGoals,
+                        completedGoals: viewModel.completedGoals,
+                        onCreateGoal: { isPresentingCreateGoal = true },
+                        onMarkCompleted: { goal in
+                            viewModel.markCompleted(goal)
+                        },
+                        isLoading: viewModel.isLoading
+                    )
+                    .environmentObject(viewModel)
+                }
                 .padding(.horizontal, Constants.Spacing.md)
                 .padding(.vertical, Constants.Spacing.xl)
                 .maxWidthLayout()
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("儲蓄目標")
+            // .navigationTitle("儲蓄目標")
+            .toolbar(.hidden, for: .navigationBar)
         }
         .sheet(isPresented: $isPresentingCreateGoal) {
             CreateGoalView { title, targetAmount, currentAmount, deadline, category, notes in
