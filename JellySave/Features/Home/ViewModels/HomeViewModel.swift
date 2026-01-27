@@ -132,6 +132,7 @@ final class HomeViewModel: ObservableObject {
             }) ?? []
         }
 
+        // For demo purposes, we force synthetic data to show the fluctuation design
         if snapshots.isEmpty {
             // fallback to synthetic data from accounts if no snapshots exist
             let totalAssets = accounts.reduce(Decimal(0)) { $0 + $1.balanceDecimal }
@@ -139,9 +140,29 @@ final class HomeViewModel: ObservableObject {
                 Calendar.current.date(byAdding: .month, value: -offset, to: Date())
             }.sorted()
 
+            // Use a default base amount if totalAssets is 0, to ensure the chart shows something
+            let baseAmount = totalAssets > 0 ? totalAssets : 100000
+            
             return months.enumerated().map { index, date in
-                let factor = 1 - Double(6 - index) * 0.02
-                let amount = totalAssets * Decimal(factor > 0 ? factor : 0.5)
+                // Base trend: gentle increase over time
+                let baseFactor = 0.9 + (Double(index) * 0.02)
+                
+                // Fluctuation: smooth sine wave (slower frequency)
+                let fluctuation = sin(Double(index) * 0.8) * 0.05
+                
+                // Random noise
+                let noise = Double.random(in: -0.01...0.01)
+                
+                // Specific adjustment for August (8) and September (9) to simulate a drop
+                let month = Calendar.current.component(.month, from: date)
+                var manualAdjustment = 0.0
+                if month == 8 || month == 9 {
+                    manualAdjustment = -0.15 // Significant drop
+                }
+                
+                let finalFactor = max(0.5, baseFactor + fluctuation + noise + manualAdjustment)
+                
+                let amount = baseAmount * Decimal(finalFactor)
                 return MonthlyTrendPoint(date: date, amount: amount)
             }
         }

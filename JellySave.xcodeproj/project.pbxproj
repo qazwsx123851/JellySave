@@ -11,6 +11,7 @@
 		143734D90A314F9A8F7E2C8B /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B04B452D964393A320A2DB /* MainTabView.swift */; };
 		1838EA2FBBDD4345B9ABFBEE90DD85A5 /* MonthlyTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D351E2FAC94BC4B9B441B0A1497237 /* MonthlyTrendChart.swift */; };
 		191EB9443F5548B385586B56 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A077D6A96E418DB9C4D3BA /* AccountsView.swift */; };
+		A5E7C2B0D7F04F6F8E842B51 /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E7C2B0D7F04F6F8E842B52 /* ScreenHeader.swift */; };
 		1C6A3E7029E9AA0100D4E5E2 /* JellySaveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3E8029E9AA0200D4E5E2 /* JellySaveApp.swift */; };
 		1C6A3E7129E9AA0100D4E5E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3E8129E9AA0200D4E5E2 /* AppDelegate.swift */; };
 		1C6A3E7229E9AA0100D4E5E2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6A3E8229E9AA0200D4E5E2 /* HomeView.swift */; };
@@ -117,6 +118,7 @@
 		5ACD42742F2E1B8400F6F4AD /* SkeletonCardPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonCardPlaceholder.swift; sourceTree = "<group>"; };
 		67D1E6B12F2F0D9C0006FB7C /* AppLockOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockOverlayView.swift; sourceTree = "<group>"; };
 		1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
+		A5E7C2B0D7F04F6F8E842B52 /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		D3E0D3FEB39D41E48C43022CE4932E1D /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		E893990F943140FD881B9A17772A37E4 /* JellySaveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellySaveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D255EEE65394831A8B83F6FFAD4CE24 /* JellySaveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JellySaveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -382,6 +384,7 @@
 				1C6A3F3129E9AA0600D4E5E2 /* Indicators */,
 				1C6A3F3229E9AA0600D4E5E2 /* Containers */,
 				1C6A3F3329E9AA0600D4E5E2 /* Inputs */,
+				A5E7C2B0D7F04F6F8E842B53 /* Headers */,
 				1C6A3F3429E9AA0600D4E5E2 /* Animations */,
 				1C6A3F3529E9AA0600D4E5E2 /* Loading */,
 				1C6A3F3629E9AA0600D4E5E2 /* Misc */,
@@ -512,6 +515,14 @@
 				1C6A3F2E29E9AA0600D4E5E2 /* CountingLabel.swift */,
 			);
 			path = Animations;
+			sourceTree = "<group>";
+		};
+		A5E7C2B0D7F04F6F8E842B53 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				A5E7C2B0D7F04F6F8E842B52 /* ScreenHeader.swift */,
+			);
+			path = Headers;
 			sourceTree = "<group>";
 		};
 		1C6A3F3529E9AA0600D4E5E2 /* Loading */ = {
@@ -745,6 +756,7 @@
 				1C6A3F0B29E9AA0600D4E5E2 /* View+Extensions.swift in Sources */,
 				1C6A3F0A29E9AA0600D4E5E2 /* GradientBackground.swift in Sources */,
 				1C6A3F0929E9AA0600D4E5E2 /* EmptyStateView.swift in Sources */,
+				A5E7C2B0D7F04F6F8E842B51 /* ScreenHeader.swift in Sources */,
 				1C6A3F0829E9AA0600D4E5E2 /* TagLabel.swift in Sources */,
 				1C6A3F0729E9AA0600D4E5E2 /* NumberFormatter+Currency.swift in Sources */,
 				1C6A3F0629E9AA0600D4E5E2 /* CurrencyTextField.swift in Sources */,

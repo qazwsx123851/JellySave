@@ -13,9 +13,11 @@ protocol AccountServiceProtocol {
 final class AccountService: AccountServiceProtocol {
     private let coreDataStack: CoreDataStack
     private let performanceMonitor = PerformanceMonitor.shared
+    private let notificationCenter: NotificationCenter
 
     init(coreDataStack: CoreDataStack = .shared) {
         self.coreDataStack = coreDataStack
+        self.notificationCenter = .default
     }
 
     func fetchAccounts() -> AnyPublisher<[Account], Error> {
@@ -44,6 +46,7 @@ final class AccountService: AccountServiceProtocol {
             account.notes = notes
 
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return account
         }
     }
@@ -52,6 +55,7 @@ final class AccountService: AccountServiceProtocol {
         perform { context in
             account.updateTimestamps()
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
             return account
         }
     }
@@ -60,6 +64,7 @@ final class AccountService: AccountServiceProtocol {
         perform { context in
             context.delete(account)
             try self.coreDataStack.save(context: context)
+            self.notifyDataChanged()
         }
     }
 
@@ -98,5 +103,11 @@ final class AccountService: AccountServiceProtocol {
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    private func notifyDataChanged() {
+        DispatchQueue.main.async {
+            self.notificationCenter.post(name: .dataStoreDidChange, object: nil)
+        }
     }
 }

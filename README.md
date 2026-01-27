@@ -198,6 +198,16 @@ enum AccountType: String, CaseIterable {
 - **無障礙友善**: 符合 WCAG 2.1 AA 標準
 - **情感化設計**: 透過色彩和動畫傳達正向的財務管理體驗
 
+## 建置與發布檢查清單
+
+- **環境需求**: Xcode 15+、iOS 16+ 模擬器或實機，CocoaPods/Swift Package 依專案設定自動解析。
+- **建置驗證**: 在 Xcode 選擇 `JellySave` scheme，目標裝置 `iPhone 15`（或任一 iOS 16+），執行 `Product > Build`。CLI 可用：  
+  `xcodebuild -scheme JellySave -destination "platform=iOS Simulator,name=iPhone 15"`。
+- **測試**: 執行單元與 UI 測試：  
+  `xcodebuild test -scheme JellySave -destination "platform=iOS Simulator,name=iPhone 15"`.
+- **發布前準備**: 更新版本號與 build number，確認 AppIcon/LaunchScreen、隱私權描述字串、通知/Face ID 權限文案。於 Release 設定下執行 `Product > Archive`，在 Organizer 內驗證並匯出/上傳。
+- **品質檢查**: 手動走查核心流程（首次啟動→新增帳戶→建立目標→通知設定→鎖定/解鎖），開啟 VoiceOver 與高對比模式確認可用性，確保骨架載入/動畫流暢且沒有阻塞主執行緒。
+
 ### 色彩系統
 
 #### 主要色彩

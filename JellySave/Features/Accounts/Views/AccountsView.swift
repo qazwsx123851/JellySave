@@ -9,19 +9,24 @@ struct AccountsView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                AccountsListView(
-                    summary: viewModel.summary,
-                    sections: viewModel.sections,
-                    quickActions: quickActions,
-                    isLoading: viewModel.isLoading,
-                    onCreateAccount: { isPresentingAddAccount = true }
-                )
+                LazyVStack(spacing: Constants.Spacing.xl) {
+                ScreenHeader(title: "我的帳戶", actionIcon: "plus", onAction: { isPresentingAddAccount = true })
+                    
+                    AccountsListView(
+                        summary: viewModel.summary,
+                        sections: viewModel.sections,
+                        quickActions: quickActions,
+                        isLoading: viewModel.isLoading,
+                        onCreateAccount: { isPresentingAddAccount = true }
+                    )
+                }
                 .padding(.horizontal, Constants.Spacing.md)
                 .padding(.vertical, Constants.Spacing.xl)
                 .maxWidthLayout()
             }
             .background(Color.appBackground.ignoresSafeArea())
-            .navigationTitle("帳戶")
+            // .navigationTitle("帳戶")
+            .toolbar(.hidden, for: .navigationBar)
         }
         .searchable(text: $viewModel.searchText, prompt: "搜尋帳戶或備註")
         .sheet(isPresented: $isPresentingAddAccount) {
